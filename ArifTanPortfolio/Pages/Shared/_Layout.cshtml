@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="@ViewData["Description"] ?? "Professional portfolio of Arif Tan, Software Engineer specializing in .NET, logistics systems, and enterprise solutions based in Batam, Indonesia"" />
+    <meta name="keywords" content="Arif Tan, Software Engineer, ASP.NET Core, C#, Batam Indonesia, Big Tech, Portfolio" />
+    <meta name="author" content="Arif Tan" />
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="@ViewData["Title"] - Arif Tan" />
+    <meta property="og:description" content="@ViewData["Description"] ?? "Software Engineer & Future Tech Leader"" />
+    <meta property="og:url" content="https://ariftan.dev" />
+    <meta property="og:image" content="~/images/profile/arif-tan-og.jpg" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="@ViewData["Title"] - Arif Tan" />
+    <meta name="twitter:description" content="@ViewData["Description"] ?? "Software Engineer & Future Tech Leader"" />
+    <meta name="twitter:image" content="~/images/profile/arif-tan-og.jpg" />
+    
+    <title>@ViewData["Title"] - Arif Tan</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <!-- DevIcons for Technology Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/devicon/2.15.1/devicon.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "Person",
+        "name": "Arif Tan",
+        "jobTitle": "Software Engineer",
+        "description": "Software Engineer specializing in .NET, ASP.NET Core, and enterprise solutions",
+        "url": "https://ariftan.dev",
+        "sameAs": [
+            "https://linkedin.com/in/ariftan",
+            "https://github.com/ariftan"
+        ],
+        "address": {
+            "@@type": "PostalAddress",
+            "addressLocality": "Batam",
+            "addressRegion": "Riau Islands",
+            "addressCountry": "Indonesia"
+        }
+    }
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-code me-2"></i>Arif Tan
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/About">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Portfolio">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Blog">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Contact">Contact</a>
+                    </li>
+                </ul>
+                
+                <!-- Social Links -->
+                <div class="navbar-nav ms-3">
+                    <!-- Theme Toggle Button -->
+                    <button class="nav-link p-2 theme-toggle" id="themeToggle" title="Toggle Theme" aria-label="Toggle between light and dark theme">
+                        <i class="fas fa-sun theme-icon-light"></i>
+                        <i class="fas fa-moon theme-icon-dark" style="display: none;"></i>
+                    </button>
+                    
+                    <!-- Existing social links -->
+                    <a class="nav-link p-2" href="https://www.linkedin.com/in/ariftan2212/" target="_blank" title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a class="nav-link p-2" href="https://github.com/Ariftan77" target="_blank" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="text-primary">Arif Tan</h5>
+                    <p class="mb-3">Software Engineer passionate about building scalable solutions and advancing Batam's tech ecosystem.</p>
+                    <div class="d-flex gap-3">
+                        <a href="https://www.linkedin.com/in/ariftan2212/" class="text-light" target="_blank">
+                            <i class="fab fa-linkedin fa-lg"></i>
+                        </a>
+                        <a href="https://github.com/Ariftan77" class="text-light" target="_blank">
+                            <i class="fab fa-github fa-lg"></i>
+                        </a>
+                        <a href="mailto:contact@ariftan.dev" class="text-light">
+                            <i class="fas fa-envelope fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="text-uppercase">Navigation</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-light text-decoration-none">Home</a></li>
+                        <li><a href="/About" class="text-light text-decoration-none">About</a></li>
+                        <li><a href="/Portfolio" class="text-light text-decoration-none">Portfolio</a></li>
+                        <li><a href="/Blog" class="text-light text-decoration-none">Blog</a></li>
+                        <li><a href="/Contact" class="text-light text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="text-uppercase">Expertise</h6>
+                    <ul class="list-unstyled">
+                        <li>ASP.NET Core Development</li>
+                        <li>Enterprise Solutions</li>
+                        <li>Logistics Systems</li>
+                        <li>Cloud Architecture</li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 mb-4">
+                    <h6 class="text-uppercase">Location</h6>
+                    <p class="mb-1">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        Batam, Riau Islands<br>
+                        Indonesia
+                    </p>
+                    <p class="mb-0">
+                        <i class="fas fa-clock me-2"></i>
+                        UTC+7 (WIB)
+                    </p>
+                </div>
+            </div>
+            
+            <hr class="my-4">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; @DateTime.Now.Year Arif Tan. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">
+                        <small>Built with ASP.NET Core & Bootstrap</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <!-- Google Analytics (Replace with your tracking ID) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_TRACKING_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_TRACKING_ID');
+    </script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

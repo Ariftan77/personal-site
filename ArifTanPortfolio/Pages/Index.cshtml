@@ -1,0 +1,282 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+    ViewData["Description"] = "Arif Tan - Software Engineer specializing in .NET, logistics systems, and enterprise solutions. 6 years experience, based in Batam, Indonesia.";
+}
+
+<!-- Hero Section -->
+<section class="hero-section bg-primary text-white">
+    <div class="container">
+        <div class="row min-vh-100 align-items-center">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="display-4 fw-bold mb-4">
+                        Software Engineer & 
+                        <span class="text-warning">Future Tech Leader</span>
+                    </h1>
+                    <p class="lead mb-4">
+                        6 years of experience building scalable enterprise solutions with .NET and modern web technologies. 
+                        Passionate about advancing Batam's tech ecosystem and transitioning to big tech companies.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3 mb-4">
+                        <span class="badge bg-warning text-dark px-3 py-2">ASP.NET Core</span>
+                        <span class="badge bg-warning text-dark px-3 py-2">C#</span>
+                        <span class="badge bg-warning text-dark px-3 py-2">Azure</span>
+                        <span class="badge bg-warning text-dark px-3 py-2">Enterprise Solutions</span>
+                    </div>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="/Portfolio" class="btn btn-warning btn-lg px-4">
+                            <i class="fas fa-briefcase me-2"></i>View Portfolio
+                        </a>
+                        <a href="/Contact" class="btn btn-outline-light btn-lg px-4">
+                            <i class="fas fa-envelope me-2"></i>Get In Touch
+                        </a>
+                        <a href="#about-preview" class="btn btn-link text-white">
+                            <i class="fas fa-arrow-down"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-image">
+                    <img src="~/images/profile/arif-tan-hero.jpg" alt="Arif Tan - Software Engineer" 
+                         class="img-fluid rounded-circle shadow-lg" style="max-width: 400px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Preview Section -->
+<section id="about-preview" class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="h1 mb-4">Building Tomorrow's Technology Today</h2>
+                <p class="lead text-muted mb-5">
+                    Based in Batam, Indonesia, I specialize in creating robust enterprise solutions that solve real-world problems. 
+                    My expertise in logistics systems and modern web technologies positions me to contribute meaningfully to global tech companies 
+                    while fostering innovation in Southeast Asia's emerging tech hub.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Stats Row -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3 text-center">
+                <div class="stat-card">
+                    <h3 class="display-4 text-primary fw-bold">6+</h3>
+                    <p class="mb-0">Years Experience</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="stat-card">
+                    <h3 class="display-4 text-primary fw-bold">20+</h3>
+                    <p class="mb-0">Projects Completed</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="stat-card">
+                    <h3 class="display-4 text-primary fw-bold">5+</h3>
+                    <p class="mb-0">Technologies Mastered</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="stat-card">
+                    <h3 class="display-4 text-primary fw-bold">100%</h3>
+                    <p class="mb-0">Commitment to Quality</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <h2 class="h1 mb-4">Technical Expertise</h2>
+                <p class="lead text-muted">
+                    Proficient in modern technologies with a focus on scalable, maintainable solutions
+                </p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            @if (Model.TopSkills?.Any() == true)
+            {
+                @foreach (var skill in Model.TopSkills)
+                {
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="skill-card card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                @if (!string.IsNullOrEmpty(skill.Icon))
+                                {
+                                    <i class="@skill.Icon colored skill-icon"></i>
+                                }
+                                <h5 class="card-title mt-3">@skill.Name</h5>
+                                <div class="progress mb-2" style="height: 8px;">
+                                    <div class="progress-bar bg-primary" style="width: @(skill.Proficiency * 10)%"></div>
+                                </div>
+                                <small class="text-muted">@skill.Proficiency/10</small>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Featured Projects Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <h2 class="h1 mb-4">Featured Projects</h2>
+                <p class="lead text-muted">
+                    Showcasing innovation in enterprise solutions and modern web development
+                </p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            @if (Model.FeaturedProjects?.Any() == true)
+            {
+                @foreach (var project in Model.FeaturedProjects.Take(3))
+                {
+                    <div class="col-lg-4">
+                        <div class="project-card card h-100 border-0 shadow-sm">
+                            @if (!string.IsNullOrEmpty(project.FeaturedImage))
+                            {
+                                <img src="@project.FeaturedImage" class="card-img-top" alt="@project.Name" style="height: 200px; object-fit: cover;">
+                            }
+                            <div class="card-body">
+                                <span class="badge bg-primary mb-2">@project.Category</span>
+                                <h5 class="card-title">@project.Name</h5>
+                                <p class="card-text text-muted">@project.Description</p>
+                                <div class="mb-3">
+                                    @foreach (var tech in project.Technologies.Split(',').Take(3))
+                                    {
+                                        <span class="badge bg-light text-dark me-1">@tech.Trim()</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="card-footer bg-transparent border-0">
+                                <div class="d-flex gap-2">
+                                    @if (!string.IsNullOrEmpty(project.LiveUrl))
+                                    {
+                                        <a href="@project.LiveUrl" class="btn btn-outline-primary btn-sm" target="_blank">
+                                            <i class="fas fa-external-link-alt me-1"></i>Live Demo
+                                        </a>
+                                    }
+                                    @if (!string.IsNullOrEmpty(project.GitHubUrl))
+                                    {
+                                        <a href="@project.GitHubUrl" class="btn btn-outline-secondary btn-sm" target="_blank">
+                                            <i class="fab fa-github me-1"></i>Code
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="/Portfolio" class="btn btn-primary btn-lg">
+                <i class="fas fa-briefcase me-2"></i>View All Projects
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Blog Posts Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <h2 class="h1 mb-4">Latest Insights</h2>
+                <p class="lead text-muted">
+                    Sharing knowledge about technology, career development, and industry trends
+                </p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            @if (Model.RecentBlogPosts?.Any() == true)
+            {
+                @foreach (var post in Model.RecentBlogPosts)
+                {
+                    <div class="col-lg-4">
+                        <div class="blog-card card h-100 border-0 shadow-sm">
+                            @if (!string.IsNullOrEmpty(post.FeaturedImage))
+                            {
+                                <img src="@post.FeaturedImage" class="card-img-top" alt="@post.Title" style="height: 200px; object-fit: cover;">
+                            }
+                            <div class="card-body">
+                                <small class="text-muted">
+                                    @post.PublishedDate.ToString("MMM dd, yyyy") • @post.ReadTimeMinutes min read
+                                </small>
+                                <h5 class="card-title mt-2">@post.Title</h5>
+                                <p class="card-text text-muted">@post.Summary</p>
+                                @if (!string.IsNullOrEmpty(post.Tags))
+                                {
+                                    <div class="mb-2">
+                                        @foreach (var tag in post.Tags.Split(',').Take(2))
+                                        {
+                                            <span class="badge bg-light text-dark me-1">#@tag.Trim()</span>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            <div class="card-footer bg-transparent border-0">
+                                <a href="/blog/@post.Slug" class="btn btn-outline-primary btn-sm">
+                                    Read More <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center">
+                    <p class="text-muted">Blog posts coming soon! Stay tuned for insights on technology and career development.</p>
+                </div>
+            }
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="/Blog" class="btn btn-primary btn-lg">
+                <i class="fas fa-blog me-2"></i>View All Posts
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="h1 mb-4">Let's Build Something Amazing Together</h2>
+                <p class="lead mb-4">
+                    Whether you're a recruiter from a big tech company, a fellow developer, or someone interested in 
+                    collaborating on innovative projects, I'd love to connect with you.
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="/Contact" class="btn btn-warning btn-lg px-4">
+                        <i class="fas fa-envelope me-2"></i>Start a Conversation
+                    </a>
+                    <a href="~/files/arif-tan-resume.pdf" class="btn btn-outline-light btn-lg px-4" target="_blank">
+                        <i class="fas fa-download me-2"></i>Download Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
