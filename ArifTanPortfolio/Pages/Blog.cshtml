@@ -1,0 +1,353 @@
+@page
+@model BlogModel
+@{
+    ViewData["Title"] = "Blog";
+    ViewData["Description"] = "Read Arif Tan's insights on software development, career growth, technology trends, and his journey toward joining big tech companies.";
+}
+
+<!-- Hero Section -->
+<section class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-4">Tech Insights & Career Journey</h1>
+                <p class="lead mb-4">
+                    Sharing knowledge about software development, career growth, technology trends, 
+                    and my journey toward joining big tech companies while building Batam's tech ecosystem.
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+                    <span class="badge bg-warning text-dark px-3 py-2">Software Development</span>
+                    <span class="badge bg-warning text-dark px-3 py-2">Career Growth</span>
+                    <span class="badge bg-warning text-dark px-3 py-2">Tech Trends</span>
+                    <span class="badge bg-warning text-dark px-3 py-2">Learning Journey</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search and Filter Section -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search articles..." id="blogSearch">
+                    <button class="btn btn-outline-primary" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Category Tags -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="d-flex flex-wrap justify-content-center gap-2" id="categoryFilters">
+                    <button class="btn btn-outline-primary category-filter active" data-category="all">
+                        All Posts
+                    </button>
+                    <button class="btn btn-outline-primary category-filter" data-category="technical">
+                        Technical
+                    </button>
+                    <button class="btn btn-outline-primary category-filter" data-category="career">
+                        Career
+                    </button>
+                    <button class="btn btn-outline-primary category-filter" data-category="learning">
+                        Learning
+                    </button>
+                    <button class="btn btn-outline-primary category-filter" data-category="industry">
+                        Industry Insights
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Blog Posts Grid -->
+<section class="py-5">
+    <div class="container">
+        @if (Model.BlogPosts?.Any() == true)
+        {
+            <div class="row g-4" id="blogPostsGrid">
+                @foreach (var post in Model.BlogPosts)
+                {
+                    <div class="col-lg-4 col-md-6 blog-post-item" data-category="@(GetCategoryFromTags(post.Tags))">
+                        <article class="card h-100 border-0 shadow-sm blog-card">
+                            @if (!string.IsNullOrEmpty(post.FeaturedImage))
+                            {
+                                <div class="position-relative overflow-hidden">
+                                    <img src="@post.FeaturedImage" class="card-img-top" alt="@post.Title" 
+                                         style="height: 200px; object-fit: cover;">
+                                    <div class="position-absolute top-0 end-0 p-3">
+                                        <span class="badge bg-primary">
+                                            @post.ReadTimeMinutes min read
+                                        </span>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
+                                    <div class="text-center">
+                                        <i class="fas fa-blog fa-3x text-muted mb-3"></i>
+                                        <div>
+                                            <span class="badge bg-primary">@post.ReadTimeMinutes min read</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            
+                            <div class="card-body">
+                                <div class="blog-meta mb-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar me-1"></i>
+                                        @post.PublishedDate.ToString("MMMM dd, yyyy")
+                                    </small>
+                                </div>
+                                
+                                <h5 class="card-title blog-title">
+                                    <a href="/blog/@post.Slug" class="text-decoration-none text-dark">
+                                        @post.Title
+                                    </a>
+                                </h5>
+                                
+                                <p class="card-text text-muted blog-excerpt">@post.Summary</p>
+                                
+                                <!-- Tags -->
+                                @if (!string.IsNullOrEmpty(post.Tags))
+                                {
+                                    <div class="blog-tags mb-3">
+                                        @foreach (var tag in post.Tags.Split(',').Take(3))
+                                        {
+                                            <span class="badge bg-light text-dark me-1">#@tag.Trim()</span>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            
+                            <div class="card-footer bg-transparent border-0">
+                                <a href="/blog/@post.Slug" class="btn btn-outline-primary btn-sm">
+                                    Read Full Article <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                }
+            </div>
+            
+            <!-- Pagination -->
+            @if (Model.TotalPages > 1)
+            {
+                <nav aria-label="Blog pagination" class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        @if (Model.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="?page=@(Model.CurrentPage - 1)">Previous</a>
+                            </li>
+                        }
+                        
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                <a class="page-link" href="?page=@i">@i</a>
+                            </li>
+                        }
+                        
+                        @if (Model.CurrentPage < Model.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="?page=@(Model.CurrentPage + 1)">Next</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+        }
+        else
+        {
+            <!-- Empty State -->
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <div class="py-5">
+                        <i class="fas fa-blog fa-4x text-muted mb-4"></i>
+                        <h3 class="text-muted mb-3">Blog Posts Coming Soon!</h3>
+                        <p class="text-muted mb-4">
+                            I'm currently working on creating valuable content about software development, 
+                            career growth, and technology trends. Stay tuned for insights from my journey 
+                            as a software engineer transitioning to big tech companies.
+                        </p>
+                        
+                        <!-- Upcoming Topics -->
+                        <div class="row g-3 mt-4">
+                            <div class="col-md-6">
+                                <div class="card border-0 bg-light">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-code text-primary fa-2x mb-3"></i>
+                                        <h6>Technical Deep Dives</h6>
+                                        <small class="text-muted">ASP.NET Core, System Design, Best Practices</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-0 bg-light">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-rocket text-success fa-2x mb-3"></i>
+                                        <h6>Career Journey</h6>
+                                        <small class="text-muted">Big Tech Preparation, Interview Tips, Growth</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-0 bg-light">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-lightbulb text-warning fa-2x mb-3"></i>
+                                        <h6>Learning Resources</h6>
+                                        <small class="text-muted">LeetCode, System Design, Books & Courses</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-0 bg-light">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-map text-info fa-2x mb-3"></i>
+                                        <h6>Batam Tech Scene</h6>
+                                        <small class="text-muted">Local Opportunities, Community Building</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <a href="/Contact" class="btn btn-primary">
+                                <i class="fas fa-bell me-2"></i>Get Notified When I Publish
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Newsletter Signup -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="h1 mb-4">Stay Updated</h2>
+                <p class="lead text-muted mb-4">
+                    Subscribe to get notified when I publish new articles about software development, 
+                    career growth, and technology insights.
+                </p>
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Enter your email">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-bell me-1"></i>Subscribe
+                            </button>
+                        </div>
+                        <small class="text-muted mt-2 d-block">No spam, unsubscribe anytime</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@functions {
+    private string GetCategoryFromTags(string tags)
+    {
+        if (string.IsNullOrEmpty(tags)) return "general";
+        
+        var tagList = tags.ToLower().Split(',').Select(t => t.Trim());
+        
+        if (tagList.Any(t => t.Contains("code") || t.Contains("programming") || t.Contains("technical")))
+            return "technical";
+        if (tagList.Any(t => t.Contains("career") || t.Contains("job") || t.Contains("interview")))
+            return "career";
+        if (tagList.Any(t => t.Contains("learning") || t.Contains("tutorial") || t.Contains("guide")))
+            return "learning";
+        if (tagList.Any(t => t.Contains("industry") || t.Contains("trend") || t.Contains("insight")))
+            return "industry";
+            
+        return "general";
+    }
+}
+
+@section Scripts {
+    <script>
+        // Initialize blog search and filter
+        document.addEventListener('DOMContentLoaded', function() {
+            initBlogSearch();
+            initCategoryFilter();
+        });
+        
+        function initBlogSearch() {
+            const searchInput = document.getElementById('blogSearch');
+            if (!searchInput) return;
+            
+            const searchPosts = debounce(function(query) {
+                const posts = document.querySelectorAll('.blog-post-item');
+                
+                posts.forEach(post => {
+                    const title = post.querySelector('.blog-title').textContent.toLowerCase();
+                    const excerpt = post.querySelector('.blog-excerpt').textContent.toLowerCase();
+                    const tags = post.querySelector('.blog-tags')?.textContent.toLowerCase() || '';
+                    
+                    if (title.includes(query) || excerpt.includes(query) || tags.includes(query)) {
+                        post.style.display = '';
+                    } else {
+                        post.style.display = 'none';
+                    }
+                });
+            }, 300);
+            
+            searchInput.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase().trim();
+                if (query.length > 2 || query.length === 0) {
+                    searchPosts(query);
+                }
+            });
+        }
+        
+        function initCategoryFilter() {
+            const filterButtons = document.querySelectorAll('.category-filter');
+            const blogPosts = document.querySelectorAll('.blog-post-item');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter posts
+                    blogPosts.forEach(post => {
+                        if (category === 'all' || post.dataset.category === category) {
+                            post.style.display = '';
+                        } else {
+                            post.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+        
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+    </script>
+}

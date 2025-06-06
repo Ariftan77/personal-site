@@ -1,0 +1,299 @@
+@page
+@model PortfolioModel
+@{
+    ViewData["Title"] = "Portfolio";
+    ViewData["Description"] = "Explore Arif Tan's portfolio of enterprise software projects, logistics systems, and innovative web applications built with ASP.NET Core and modern technologies.";
+}
+
+<!-- Hero Section -->
+<section class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-4">My Portfolio</h1>
+                <p class="lead mb-4">
+                    A showcase of enterprise solutions, innovative web applications, and cutting-edge projects 
+                    that demonstrate my expertise in full-stack development and system architecture.
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+                    <span class="badge bg-warning text-dark px-3 py-2">20+ Projects</span>
+                    <span class="badge bg-warning text-dark px-3 py-2">Enterprise Scale</span>
+                    <span class="badge bg-warning text-dark px-3 py-2">Modern Tech Stack</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Filter Section -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex flex-wrap justify-content-center gap-2" id="portfolioFilters">
+                    <button class="btn btn-outline-primary portfolio-filter active" data-filter="all">
+                        All Projects
+                    </button>
+                    <button class="btn btn-outline-primary portfolio-filter" data-filter="Enterprise Software">
+                        Enterprise Software
+                    </button>
+                    <button class="btn btn-outline-primary portfolio-filter" data-filter="Machine Learning">
+                        Machine Learning
+                    </button>
+                    <button class="btn btn-outline-primary portfolio-filter" data-filter="Web Applications">
+                        Web Applications
+                    </button>
+                    <button class="btn btn-outline-primary portfolio-filter" data-filter="API Development">
+                        API Development
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Grid -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4" id="portfolioGrid">
+            @if (Model.Projects?.Any() == true)
+            {
+                @foreach (var project in Model.Projects)
+                {
+                    <div class="col-lg-4 col-md-6 portfolio-item" data-category="@project.Category">
+                        <div class="card h-100 border-0 shadow-sm project-card">
+                            @if (!string.IsNullOrEmpty(project.FeaturedImage))
+                            {
+                                <div class="position-relative overflow-hidden">
+                                    <img src="@project.FeaturedImage" class="card-img-top" alt="@project.Name" 
+                                         style="height: 250px; object-fit: cover;">
+                                    <div class="position-absolute top-0 start-0 p-3">
+                                        <span class="badge bg-primary">@project.Category</span>
+                                        @if (project.IsFeatured)
+                                        {
+                                            <span class="badge bg-warning text-dark ms-1">Featured</span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 250px;">
+                                    <div class="text-center">
+                                        <i class="fas fa-code fa-3x text-muted mb-3"></i>
+                                        <div>
+                                            <span class="badge bg-primary">@project.Category</span>
+                                            @if (project.IsFeatured)
+                                            {
+                                                <span class="badge bg-warning text-dark ms-1">Featured</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            
+                            <div class="card-body">
+                                <h5 class="card-title">@project.Name</h5>
+                                <p class="card-text text-muted">@project.Description</p>
+                                
+                                <!-- Technology Tags -->
+                                <div class="mb-3">
+                                    @foreach (var tech in project.Technologies.Split(',').Take(4))
+                                    {
+                                        <span class="badge bg-light text-dark me-1 mb-1">@tech.Trim()</span>
+                                    }
+                                    @if (project.Technologies.Split(',').Length > 4)
+                                    {
+                                        <span class="badge bg-secondary me-1 mb-1">+@(project.Technologies.Split(',').Length - 4) more</span>
+                                    }
+                                </div>
+                                
+                                <!-- Project Timeline -->
+                                <div class="mb-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar me-1"></i>
+                                        @project.StartDate.ToString("MMM yyyy") - 
+                                        @(project.EndDate?.ToString("MMM yyyy") ?? "Present")
+                                    </small>
+                                </div>
+                            </div>
+                            
+                            <div class="card-footer bg-transparent border-0">
+                                <div class="d-flex gap-2 flex-wrap">
+                                    @if (!string.IsNullOrEmpty(project.LiveUrl))
+                                    {
+                                        <a href="@project.LiveUrl" class="btn btn-primary btn-sm" target="_blank">
+                                            <i class="fas fa-external-link-alt me-1"></i>Live Demo
+                                        </a>
+                                    }
+                                    @if (!string.IsNullOrEmpty(project.GitHubUrl))
+                                    {
+                                        <a href="@project.GitHubUrl" class="btn btn-outline-secondary btn-sm" target="_blank">
+                                            <i class="fab fa-github me-1"></i>Source Code
+                                        </a>
+                                    }
+                                    <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#projectModal@(project.Id)">
+                                        <i class="fas fa-info-circle me-1"></i>Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center">
+                    <div class="py-5">
+                        <i class="fas fa-code fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">Projects Coming Soon</h4>
+                        <p class="text-muted">Portfolio projects are being prepared for showcase.</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Project Modals -->
+@if (Model.Projects?.Any() == true)
+{
+    @foreach (var project in Model.Projects)
+    {
+        <div class="modal fade" id="projectModal@(project.Id)" tabindex="-1" aria-labelledby="projectModalLabel@(project.Id)" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="projectModalLabel@(project.Id)">@project.Name</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @if (!string.IsNullOrEmpty(project.FeaturedImage))
+                        {
+                            <img src="@project.FeaturedImage" class="img-fluid rounded mb-4" alt="@project.Name">
+                        }
+                        
+                        <div class="mb-3">
+                            <span class="badge bg-primary me-2">@project.Category</span>
+                            <small class="text-muted">
+                                @project.StartDate.ToString("MMM yyyy") - @(project.EndDate?.ToString("MMM yyyy") ?? "Present")
+                            </small>
+                        </div>
+                        
+                        <h6>Project Overview</h6>
+                        <p>@(project.LongDescription ?? project.Description)</p>
+                        
+                        @if (!string.IsNullOrEmpty(project.Challenges))
+                        {
+                            <h6>Challenges</h6>
+                            <p>@project.Challenges</p>
+                        }
+                        
+                        @if (!string.IsNullOrEmpty(project.Solutions))
+                        {
+                            <h6>Solutions</h6>
+                            <p>@project.Solutions</p>
+                        }
+                        
+                        @if (!string.IsNullOrEmpty(project.LessonsLearned))
+                        {
+                            <h6>Lessons Learned</h6>
+                            <p>@project.LessonsLearned</p>
+                        }
+                        
+                        <h6>Technologies Used</h6>
+                        <div class="mb-3">
+                            @foreach (var tech in project.Technologies.Split(','))
+                            {
+                                <span class="badge bg-light text-dark me-1 mb-1">@tech.Trim()</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        @if (!string.IsNullOrEmpty(project.LiveUrl))
+                        {
+                            <a href="@project.LiveUrl" class="btn btn-primary" target="_blank">
+                                <i class="fas fa-external-link-alt me-1"></i>View Live
+                            </a>
+                        }
+                        @if (!string.IsNullOrEmpty(project.GitHubUrl))
+                        {
+                            <a href="@project.GitHubUrl" class="btn btn-outline-secondary" target="_blank">
+                                <i class="fab fa-github me-1"></i>Source Code
+                            </a>
+                        }
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+<!-- Call to Action -->
+<section class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="h1 mb-4">Interested in Working Together?</h2>
+                <p class="lead mb-4">
+                    I'm always excited to take on new challenges and collaborate on innovative projects. 
+                    Let's discuss how we can create something amazing together.
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="/Contact" class="btn btn-warning btn-lg px-4">
+                        <i class="fas fa-envelope me-2"></i>Start a Project
+                    </a>
+                    <a href="~/files/arif-tan-resume.pdf" class="btn btn-outline-light btn-lg px-4" target="_blank">
+                        <i class="fas fa-download me-2"></i>Download Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Initialize portfolio filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            initPortfolioFilter();
+        });
+        
+        function initPortfolioFilter() {
+            const filterButtons = document.querySelectorAll('.portfolio-filter');
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
+            
+            if (filterButtons.length === 0) return;
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.dataset.filter;
+                    
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter items with animation
+                    portfolioItems.forEach(item => {
+                        if (filter === 'all' || item.dataset.category === filter) {
+                            item.style.display = '';
+                            item.style.opacity = '0';
+                            item.style.transform = 'translateY(20px)';
+                            
+                            setTimeout(() => {
+                                item.style.opacity = '1';
+                                item.style.transform = 'translateY(0)';
+                            }, 100);
+                        } else {
+                            item.style.opacity = '0';
+                            item.style.transform = 'translateY(-20px)';
+                            setTimeout(() => {
+                                item.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+        }
+    </script>
+}

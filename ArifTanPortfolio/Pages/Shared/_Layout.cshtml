@@ -60,54 +60,61 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/">
-                <i class="fas fa-code me-2"></i>Arif Tan
-            </a>
+   <!-- Updated Navigation Section for _Layout.cshtml -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/">
+            <i class="fas fa-code me-2"></i>Arif Tan
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/About">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Portfolio">Portfolio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Blog">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Contact">Contact</a>
+                </li>
+            </ul>
             
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/About">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Portfolio">Portfolio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Blog">Blog</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Contact">Contact</a>
-                    </li>
-                </ul>
-                
-                <!-- Social Links -->
-                <div class="navbar-nav ms-3">
-                    <!-- Theme Toggle Button -->
-                    <button class="nav-link p-2 theme-toggle" id="themeToggle" title="Toggle Theme" aria-label="Toggle between light and dark theme">
+            <!-- Social Links -->
+            <div class="navbar-nav ms-3 d-flex flex-row">
+                <!-- Theme Toggle Button -->
+                <li class="nav-item">
+                    <button class="nav-link theme-toggle" id="themeToggle" title="Toggle Theme" aria-label="Toggle between light and dark theme">
                         <i class="fas fa-sun theme-icon-light"></i>
                         <i class="fas fa-moon theme-icon-dark" style="display: none;"></i>
                     </button>
-                    
-                    <!-- Existing social links -->
-                    <a class="nav-link p-2" href="https://www.linkedin.com/in/ariftan2212/" target="_blank" title="LinkedIn">
+                </li>
+                
+                <!-- Social Links -->
+                <li class="nav-item">
+                    <a class="nav-link" href="https://www.linkedin.com/in/ariftan2212/" target="_blank" title="LinkedIn">
                         <i class="fab fa-linkedin"></i>
                     </a>
-                    <a class="nav-link p-2" href="https://github.com/Ariftan77" target="_blank" title="GitHub">
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/Ariftan77" target="_blank" title="GitHub">
                         <i class="fab fa-github"></i>
                     </a>
-                </div>
+                </li>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <!-- Main Content -->
     <main role="main" class="pb-3">

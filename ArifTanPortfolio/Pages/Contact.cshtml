@@ -1,0 +1,387 @@
+@page
+@model ContactModel
+@{
+    ViewData["Title"] = "Contact";
+    ViewData["Description"] = "Get in touch with Arif Tan for software development opportunities, collaboration, or discussions about technology and career growth.";
+}
+
+<!-- Hero Section -->
+<section class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-4">Let's Connect</h1>
+                <p class="lead mb-4">
+                    Whether you're a recruiter, fellow developer, or someone interested in collaboration, 
+                    I'd love to hear from you. Let's discuss opportunities, share ideas, or just connect!
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+                    <span class="badge bg-warning text-dark px-3 py-2">Open to Opportunities</span>
+                    <span class="badge bg-warning text-dark px-3 py-2">Quick Response</span>
+                    <span class="badge bg-warning text-dark px-3 py-2">Professional Network</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Contact Form -->
+            <div class="col-lg-8">
+                <div class="contact-form">
+                    <h2 class="h3 mb-4">Send Me a Message</h2>
+                    <p class="text-muted mb-4">
+                        Fill out the form below and I'll get back to you within 24 hours. 
+                        For urgent matters, feel free to reach out via LinkedIn or email directly.
+                    </p>
+                    
+                    <form asp-page-handler="SendMessage" method="post" id="contactForm" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="Contact.Name" class="form-label">Full Name *</label>
+                                <input asp-for="Contact.Name" class="form-control" placeholder="Your full name" required>
+                                <span asp-validation-for="Contact.Name" class="invalid-feedback"></span>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label asp-for="Contact.Email" class="form-label">Email Address *</label>
+                                <input asp-for="Contact.Email" type="email" class="form-control" placeholder="your.email@example.com" required>
+                                <span asp-validation-for="Contact.Email" class="invalid-feedback"></span>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label asp-for="Contact.Company" class="form-label">Company/Organization</label>
+                                <input asp-for="Contact.Company" class="form-control" placeholder="Your company (optional)">
+                                <span asp-validation-for="Contact.Company" class="invalid-feedback"></span>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label asp-for="Contact.Phone" class="form-label">Phone Number</label>
+                                <input asp-for="Contact.Phone" type="tel" class="form-control" placeholder="+62 xxx xxxx xxxx (optional)">
+                                <span asp-validation-for="Contact.Phone" class="invalid-feedback"></span>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label asp-for="Contact.Subject" class="form-label">Subject</label>
+                                <select asp-for="Contact.Subject" class="form-select">
+                                    <option value="">Select a subject</option>
+                                    <option value="Job Opportunity">Job Opportunity</option>
+                                    <option value="Collaboration">Collaboration Proposal</option>
+                                    <option value="Freelance Project">Freelance Project</option>
+                                    <option value="Mentorship">Mentorship</option>
+                                    <option value="Speaking Engagement">Speaking Engagement</option>
+                                    <option value="General Inquiry">General Inquiry</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span asp-validation-for="Contact.Subject" class="invalid-feedback"></span>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label asp-for="Contact.Message" class="form-label">Message *</label>
+                                <textarea asp-for="Contact.Message" class="form-control" rows="6" 
+                                         placeholder="Tell me about your project, opportunity, or what you'd like to discuss..." required></textarea>
+                                <span asp-validation-for="Contact.Message" class="invalid-feedback"></span>
+                                <div class="form-text">Minimum 10 characters</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-4">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
+                            <small class="text-muted ms-3">
+                                <i class="fas fa-shield-alt me-1"></i>
+                                Your information is secure and will not be shared.
+                            </small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Contact Information -->
+            <div class="col-lg-4">
+                <div class="position-sticky" style="top: 100px;">
+                    <!-- Contact Details -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">
+                                <i class="fas fa-address-card text-primary me-2"></i>Contact Information
+                            </h5>
+                            
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-envelope text-primary me-3"></i>
+                                    <div>
+                                        <strong>Email</strong><br>
+                                        <a href="mailto:contact@ariftan.dev" class="text-decoration-none">
+                                            contact@ariftan.dev
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-map-marker-alt text-primary me-3"></i>
+                                    <div>
+                                        <strong>Location</strong><br>
+                                        <span class="text-muted">
+                                            Batam, Riau Islands<br>
+                                            Indonesia (UTC+7)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-clock text-primary me-3"></i>
+                                    <div>
+                                        <strong>Response Time</strong><br>
+                                        <span class="text-muted">Within 24 hours</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-language text-primary me-3"></i>
+                                    <div>
+                                        <strong>Languages</strong><br>
+                                        <span class="text-muted">English, Bahasa Indonesia</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Social Links -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">
+                                <i class="fas fa-share-alt text-primary me-2"></i>Connect With Me
+                            </h5>
+                            
+                            <div class="d-grid gap-2">
+                                <a href="https://www.linkedin.com/in/ariftan2212/" 
+                                   class="btn btn-outline-primary" target="_blank">
+                                    <i class="fab fa-linkedin me-2"></i>LinkedIn Profile
+                                </a>
+                                <a href="https://github.com/Ariftan77" 
+                                   class="btn btn-outline-secondary" target="_blank">
+                                    <i class="fab fa-github me-2"></i>GitHub Projects
+                                </a>
+                                <a href="~/files/arif-tan-resume.pdf" 
+                                   class="btn btn-outline-success" target="_blank">
+                                    <i class="fas fa-download me-2"></i>Download Resume
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Availability Status -->
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">
+                                <i class="fas fa-calendar-check text-primary me-2"></i>Current Status
+                            </h5>
+                            
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-success rounded-circle me-3" style="width: 12px; height: 12px;"></div>
+                                <span class="text-success fw-bold">Available for Opportunities</span>
+                            </div>
+                            
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Full-time positions
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Remote/hybrid work
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Consulting projects
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Speaking engagements
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="h1 text-center mb-5">Frequently Asked Questions</h2>
+                
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                What types of opportunities are you looking for?
+                            </button>
+                        </h3>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                I'm primarily interested in software engineering roles at big tech companies (Google, Microsoft, Meta, etc.), 
+                                senior developer positions, and technical leadership opportunities. I'm also open to interesting consulting 
+                                projects and collaboration on innovative tech solutions.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                Are you available for freelance projects?
+                            </button>
+                        </h3>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, I'm selectively available for high-impact freelance projects, especially those involving 
+                                ASP.NET Core, enterprise systems, or complex problem-solving. I prefer projects with clear 
+                                scope and meaningful business impact.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Do you provide mentorship or technical consultation?
+                            </button>
+                        </h3>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Absolutely! I enjoy mentoring aspiring developers and providing technical consultation on 
+                                software architecture, career growth, and big tech preparation. Feel free to reach out to 
+                                discuss how I can help.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                How quickly do you respond to messages?
+                            </button>
+                        </h3>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                I typically respond to all messages within 24 hours. For urgent opportunities or time-sensitive 
+                                matters, I often respond much faster. LinkedIn messages tend to get the quickest response.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Success/Error Messages -->
+<div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 1050; max-width: 400px;"></div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Enhanced contact form handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('contactForm');
+            if (form) {
+                form.addEventListener('submit', handleContactFormSubmit);
+            }
+        });
+        
+        async function handleContactFormSubmit(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+            submitBtn.disabled = true;
+            
+            try {
+                const formData = new FormData(form);
+                
+                const response = await fetch(form.action || window.location.pathname, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('success', 'Thank you! Your message has been sent successfully. I\'ll get back to you within 24 hours.');
+                    form.reset();
+                    
+                    // Track successful contact form submission
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'contact_form_submit', {
+                            'event_category': 'engagement',
+                            'event_label': 'contact_form'
+                        });
+                    }
+                } else {
+                    showAlert('danger', result.message || 'Sorry, there was an error sending your message. Please try again or contact me directly via email.');
+                }
+            } catch (error) {
+                console.error('Contact form error:', error);
+                showAlert('danger', 'Sorry, there was an error sending your message. Please try again or contact me directly via email.');
+            } finally {
+                // Restore button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+        
+        function showAlert(type, message) {
+            const alertContainer = document.getElementById('alertContainer');
+            
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type} alert-dismissible fade show`;
+            alert.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            alertContainer.appendChild(alert);
+            
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    alert.remove();
+                }
+            }, 5000);
+        }
+        
+        // Copy email to clipboard functionality
+        function copyEmail() {
+            navigator.clipboard.writeText('contact@ariftan.dev').then(function() {
+                showAlert('success', 'Email address copied to clipboard!');
+            });
+        }
+    </script>
+}

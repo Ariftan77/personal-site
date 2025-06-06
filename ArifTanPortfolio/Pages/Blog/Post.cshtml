@@ -1,0 +1,305 @@
+@page "/blog/post"
+@model BlogPostModel
+@{
+    ViewData["Title"] = Model.Post?.Title ?? "Blog Post";
+    ViewData["Description"] = Model.Post?.Summary ?? "Read the latest insights from Arif Tan on software development and career growth.";
+}
+
+@if (Model.Post != null)
+{
+    <!-- Article Header -->
+    <article class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb" class="mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/Blog">Blog</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">@Model.Post.Title</li>
+                        </ol>
+                    </nav>
+                    
+                    <!-- Article Meta -->
+                    <div class="mb-4">
+                        @if (!string.IsNullOrEmpty(Model.Post.Tags))
+                        {
+                            <div class="mb-3">
+                                @foreach (var tag in Model.Post.Tags.Split(',').Take(3))
+                                {
+                                    <span class="badge bg-primary me-1">#@tag.Trim()</span>
+                                }
+                            </div>
+                        }
+                        
+                        <h1 class="display-5 fw-bold mb-3">@Model.Post.Title</h1>
+                        
+                        <div class="d-flex align-items-center text-muted mb-4">
+                            <img src="~/images/profile/arif-tan-avatar.jpg" alt="Arif Tan" 
+                                 class="rounded-circle me-3" width="50" height="50">
+                            <div>
+                                <div class="fw-bold text-dark">Arif Tan</div>
+                                <small>
+                                    <i class="fas fa-calendar me-1"></i>
+                                    @Model.Post.PublishedDate.ToString("MMMM dd, yyyy")
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-clock me-1"></i>
+                                    @Model.Post.ReadTimeMinutes min read
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-eye me-1"></i>
+                                    <span id="viewCount">Loading...</span> views
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Featured Image -->
+                    @if (!string.IsNullOrEmpty(Model.Post.FeaturedImage))
+                    {
+                        <div class="mb-5">
+                            <img src="@Model.Post.FeaturedImage" alt="@Model.Post.Title" 
+                                 class="img-fluid rounded shadow">
+                        </div>
+                    }
+                    
+                    <!-- Article Summary -->
+                    @if (!string.IsNullOrEmpty(Model.Post.Summary))
+                    {
+                        <div class="lead mb-5 p-4 bg-light rounded border-start border-primary border-4">
+                            @Model.Post.Summary
+                        </div>
+                    }
+                    
+                    <!-- Social Share Buttons -->
+                    <div class="d-flex gap-2 mb-5">
+                        <span class="me-2 text-muted">Share:</span>
+                        <a href="#" class="btn btn-outline-primary btn-sm share-btn" 
+                           data-platform="twitter" title="Share on Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-primary btn-sm share-btn" 
+                           data-platform="linkedin" title="Share on LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm share-btn" 
+                           data-platform="copy" title="Copy Link">
+                            <i class="fas fa-link"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+    
+    <!-- Article Content -->
+    <section class="pb-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="blog-content">
+                        @Html.Raw(Model.Post.Content)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Article Footer -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <!-- Author Bio -->
+                    <div class="card border-0 shadow-sm mb-5">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <img src="~/images/profile/arif-tan-avatar.jpg" alt="Arif Tan" 
+                                         class="rounded-circle" width="80" height="80">
+                                </div>
+                                <div class="col">
+                                    <h5 class="mb-2">About Arif Tan</h5>
+                                    <p class="text-muted mb-3">
+                                        Software Engineer with 6+ years of experience building enterprise solutions. 
+                                        Passionate about sharing knowledge and helping developers grow their careers 
+                                        while pursuing opportunities with big tech companies.
+                                    </p>
+                                    <div class="d-flex gap-2">
+                                        <a href="https://linkedin.com/in/ariftan" class="btn btn-outline-primary btn-sm" target="_blank">
+                                            <i class="fab fa-linkedin me-1"></i>Follow
+                                        </a>
+                                        <a href="/Contact" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-envelope me-1"></i>Contact
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Related Posts -->
+                    @if (Model.RelatedPosts?.Any() == true)
+                    {
+                        <div class="mb-5">
+                            <h3 class="mb-4">Related Articles</h3>
+                            <div class="row g-4">
+                                @foreach (var relatedPost in Model.RelatedPosts.Take(3))
+                                {
+                                    <div class="col-md-4">
+                                        <div class="card h-100 border-0 shadow-sm">
+                                            @if (!string.IsNullOrEmpty(relatedPost.FeaturedImage))
+                                            {
+                                                <img src="@relatedPost.FeaturedImage" class="card-img-top" alt="@relatedPost.Title" 
+                                                     style="height: 150px; object-fit: cover;">
+                                            }
+                                            <div class="card-body">
+                                                <h6 class="card-title">
+                                                    <a href="/blog/@relatedPost.Slug" class="text-decoration-none">
+                                                        @relatedPost.Title
+                                                    </a>
+                                                </h6>
+                                                <small class="text-muted">
+                                                    @relatedPost.PublishedDate.ToString("MMM dd, yyyy")
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    
+                    <!-- Navigation -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="/Blog" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Blog
+                        </a>
+                        
+                        <div class="d-flex gap-2">
+                            @if (Model.PreviousPost != null)
+                            {
+                                <a href="/blog/@Model.PreviousPost.Slug" class="btn btn-outline-secondary" 
+                                   title="@Model.PreviousPost.Title">
+                                    <i class="fas fa-chevron-left me-1"></i>Previous
+                                </a>
+                            }
+                            @if (Model.NextPost != null)
+                            {
+                                <a href="/blog/@Model.NextPost.Slug" class="btn btn-outline-secondary" 
+                                   title="@Model.NextPost.Title">
+                                    Next<i class="fas fa-chevron-right ms-1"></i>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <!-- Post Not Found -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <div class="py-5">
+                        <i class="fas fa-exclamation-triangle fa-4x text-warning mb-4"></i>
+                        <h2 class="mb-3">Blog Post Not Found</h2>
+                        <p class="text-muted mb-4">
+                            Sorry, the blog post you're looking for doesn't exist or may have been moved.
+                        </p>
+                        <div class="d-flex gap-3 justify-content-center">
+                            <a href="/Blog" class="btn btn-primary">
+                                <i class="fas fa-blog me-2"></i>Browse All Posts
+                            </a>
+                            <a href="/" class="btn btn-outline-secondary">
+                                <i class="fas fa-home me-2"></i>Go Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@section Scripts {
+    <script>
+        // Social sharing functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            initSocialSharing();
+            updateViewCount();
+        });
+        
+        function initSocialSharing() {
+            const shareButtons = document.querySelectorAll('.share-btn');
+            const currentUrl = window.location.href;
+            const title = document.title;
+            
+            shareButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const platform = this.dataset.platform;
+                    
+                    switch(platform) {
+                        case 'twitter':
+                            window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(title)}`, 
+                                      '_blank', 'width=600,height=400');
+                            break;
+                        case 'linkedin':
+                            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`, 
+                                      '_blank', 'width=600,height=400');
+                            break;
+                        case 'copy':
+                            copyToClipboard(currentUrl, this);
+                            break;
+                    }
+                });
+            });
+        }
+        
+        function copyToClipboard(text, element) {
+            navigator.clipboard.writeText(text).then(function() {
+                const originalText = element.innerHTML;
+                element.innerHTML = '<i class="fas fa-check"></i>';
+                element.classList.add('btn-success');
+                element.classList.remove('btn-outline-secondary');
+                
+                setTimeout(() => {
+                    element.innerHTML = originalText;
+                    element.classList.remove('btn-success');
+                    element.classList.add('btn-outline-secondary');
+                }, 2000);
+            });
+        }
+        
+        function updateViewCount() {
+            // Simulate view count - in real app, this would call an API
+            const viewCountElement = document.getElementById('viewCount');
+            if (viewCountElement) {
+                // Generate a random view count for demo purposes
+                const viewCount = Math.floor(Math.random() * 500) + 100;
+                viewCountElement.textContent = viewCount.toLocaleString();
+            }
+        }
+        
+        // Reading progress indicator
+        window.addEventListener('scroll', function() {
+            const article = document.querySelector('article');
+            if (!article) return;
+            
+            const scrollTop = window.pageYOffset;
+            const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / documentHeight) * 100;
+            
+            // Update a progress bar if you add one
+            const progressBar = document.getElementById('reading-progress');
+            if (progressBar) {
+                progressBar.style.width = Math.min(progress, 100) + '%';
+            }
+        });
+    </script>
+}
