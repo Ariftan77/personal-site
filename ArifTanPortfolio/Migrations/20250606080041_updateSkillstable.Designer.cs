@@ -3,6 +3,7 @@ using System;
 using ArifTanPortfolio.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArifTanPortfolio.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250606080041_updateSkillstable")]
+    partial class updateSkillstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
@@ -200,18 +203,18 @@ namespace ArifTanPortfolio.Migrations
                         {
                             Id = 1,
                             Category = "Enterprise Software",
-                            Challenges = "Real-time inventory synchronization across multiple locations, performance optimization with large datasets, complex business logic implementation, integration with legacy ERP systems, ensuring 99.9% uptime for critical operations",
-                            Description = "Comprehensive WMS handling inventory management, order processing, and real-time analytics for logistics operations",
-                            EndDate = new DateTime(2025, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Challenges = "",
+                            Description = "Comprehensive warehouse management system with real-time tracking and analytics",
+                            EndDate = new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageGallery = "",
                             IsFeatured = true,
-                            LessonsLearned = "Importance of scalable architecture design, performance optimization strategies for enterprise applications, effective team collaboration in complex projects, domain-driven design principles, real-time system challenges and solutions",
-                            LongDescription = "Led development of a full-scale warehouse management system that processes thousands of transactions daily across multiple warehouse locations. The system handles complex inventory tracking, order fulfillment workflows, and provides real-time analytics for operational decision-making. Built with scalable architecture to support business growth and integration with existing ERP systems.",
-                            Name = "Enterprise Warehouse Management System",
-                            Solutions = "Implemented SignalR for real-time updates, optimized database queries with strategic indexing, applied clean architecture with domain-driven design, created robust API layer for integrations, implemented comprehensive logging and monitoring",
+                            LessonsLearned = "",
+                            LongDescription = "A full-featured WMS built with ASP.NET Core, handling inventory management, order processing, and real-time analytics for logistics operations.",
+                            Name = "Advanced Logistics Platform",
+                            Solutions = "",
                             SortOrder = 1,
-                            StartDate = new DateTime(2025, 5, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Technologies = "ASP.NET Core, Entity Framework Core, SQL Server, SignalR, Azure, JavaScript, Bootstrap"
+                            StartDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Technologies = "ASP.NET Core, Entity Framework, SQL Server, SignalR, Azure"
                         },
                         new
                         {

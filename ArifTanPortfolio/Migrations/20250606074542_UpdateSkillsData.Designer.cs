@@ -3,6 +3,7 @@ using System;
 using ArifTanPortfolio.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArifTanPortfolio.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250606074542_UpdateSkillsData")]
+    partial class UpdateSkillsData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
@@ -200,18 +203,18 @@ namespace ArifTanPortfolio.Migrations
                         {
                             Id = 1,
                             Category = "Enterprise Software",
-                            Challenges = "Real-time inventory synchronization across multiple locations, performance optimization with large datasets, complex business logic implementation, integration with legacy ERP systems, ensuring 99.9% uptime for critical operations",
-                            Description = "Comprehensive WMS handling inventory management, order processing, and real-time analytics for logistics operations",
-                            EndDate = new DateTime(2025, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Challenges = "",
+                            Description = "Comprehensive warehouse management system with real-time tracking and analytics",
+                            EndDate = new DateTime(2023, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageGallery = "",
                             IsFeatured = true,
-                            LessonsLearned = "Importance of scalable architecture design, performance optimization strategies for enterprise applications, effective team collaboration in complex projects, domain-driven design principles, real-time system challenges and solutions",
-                            LongDescription = "Led development of a full-scale warehouse management system that processes thousands of transactions daily across multiple warehouse locations. The system handles complex inventory tracking, order fulfillment workflows, and provides real-time analytics for operational decision-making. Built with scalable architecture to support business growth and integration with existing ERP systems.",
-                            Name = "Enterprise Warehouse Management System",
-                            Solutions = "Implemented SignalR for real-time updates, optimized database queries with strategic indexing, applied clean architecture with domain-driven design, created robust API layer for integrations, implemented comprehensive logging and monitoring",
+                            LessonsLearned = "",
+                            LongDescription = "A full-featured WMS built with ASP.NET Core, handling inventory management, order processing, and real-time analytics for logistics operations.",
+                            Name = "Advanced Logistics Platform",
+                            Solutions = "",
                             SortOrder = 1,
-                            StartDate = new DateTime(2025, 5, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Technologies = "ASP.NET Core, Entity Framework Core, SQL Server, SignalR, Azure, JavaScript, Bootstrap"
+                            StartDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Technologies = "ASP.NET Core, Entity Framework, SQL Server, SignalR, Azure"
                         },
                         new
                         {
@@ -301,7 +304,7 @@ namespace ArifTanPortfolio.Migrations
                             Icon = "devicon-python-plain",
                             IsVisible = true,
                             Name = "Python",
-                            Proficiency = 8,
+                            Proficiency = 7,
                             SortOrder = 3
                         },
                         new
@@ -319,9 +322,9 @@ namespace ArifTanPortfolio.Migrations
                             Id = 5,
                             Category = "Web Frameworks",
                             Icon = "devicon-dot-net-plain",
-                            IsVisible = false,
+                            IsVisible = true,
                             Name = "ASP.NET MVC",
-                            Proficiency = 9,
+                            Proficiency = 8,
                             SortOrder = 2
                         },
                         new
@@ -329,7 +332,7 @@ namespace ArifTanPortfolio.Migrations
                             Id = 6,
                             Category = "Web Frameworks",
                             Icon = "devicon-dot-net-plain",
-                            IsVisible = false,
+                            IsVisible = true,
                             Name = "Razor Pages",
                             Proficiency = 9,
                             SortOrder = 3
@@ -350,7 +353,7 @@ namespace ArifTanPortfolio.Migrations
                             Category = "Web Frameworks",
                             Description = "Maintenance experience",
                             Icon = "devicon-react-original",
-                            IsVisible = false,
+                            IsVisible = true,
                             Name = "React",
                             Proficiency = 6,
                             SortOrder = 5
@@ -360,7 +363,7 @@ namespace ArifTanPortfolio.Migrations
                             Id = 9,
                             Category = "Web Frameworks",
                             Icon = "devicon-dot-net-plain",
-                            IsVisible = false,
+                            IsVisible = true,
                             Name = "SignalR",
                             Proficiency = 8,
                             SortOrder = 6
@@ -370,7 +373,7 @@ namespace ArifTanPortfolio.Migrations
                             Id = 10,
                             Category = "Frontend",
                             Icon = "devicon-jquery-plain",
-                            IsVisible = false,
+                            IsVisible = true,
                             Name = "jQuery",
                             Proficiency = 8,
                             SortOrder = 1
@@ -380,7 +383,7 @@ namespace ArifTanPortfolio.Migrations
                             Id = 11,
                             Category = "Frontend",
                             Icon = "devicon-javascript-plain",
-                            IsVisible = false,
+                            IsVisible = true,
                             Name = "AJAX",
                             Proficiency = 8,
                             SortOrder = 2
@@ -390,7 +393,7 @@ namespace ArifTanPortfolio.Migrations
                             Id = 12,
                             Category = "Frontend",
                             Icon = "devicon-bootstrap-plain",
-                            IsVisible = false,
+                            IsVisible = true,
                             Name = "Bootstrap",
                             Proficiency = 8,
                             SortOrder = 3
@@ -400,7 +403,7 @@ namespace ArifTanPortfolio.Migrations
                             Id = 13,
                             Category = "Frontend",
                             Icon = "devicon-html5-plain",
-                            IsVisible = false,
+                            IsVisible = true,
                             Name = "HTML/CSS",
                             Proficiency = 8,
                             SortOrder = 4
@@ -412,7 +415,7 @@ namespace ArifTanPortfolio.Migrations
                             Icon = "devicon-microsoftsqlserver-plain",
                             IsVisible = true,
                             Name = "SQL Server",
-                            Proficiency = 9,
+                            Proficiency = 8,
                             SortOrder = 1
                         },
                         new
@@ -422,7 +425,7 @@ namespace ArifTanPortfolio.Migrations
                             Icon = "devicon-postgresql-plain",
                             IsVisible = true,
                             Name = "PostgreSQL",
-                            Proficiency = 9,
+                            Proficiency = 7,
                             SortOrder = 2
                         },
                         new
@@ -430,7 +433,7 @@ namespace ArifTanPortfolio.Migrations
                             Id = 16,
                             Category = "Databases",
                             Icon = "devicon-dot-net-plain",
-                            IsVisible = false,
+                            IsVisible = true,
                             Name = "Entity Framework Core",
                             Proficiency = 9,
                             SortOrder = 3
@@ -440,9 +443,9 @@ namespace ArifTanPortfolio.Migrations
                             Id = 17,
                             Category = "Databases",
                             Icon = "devicon-sqlite-plain",
-                            IsVisible = false,
+                            IsVisible = true,
                             Name = "SQLite",
-                            Proficiency = 9,
+                            Proficiency = 7,
                             SortOrder = 4
                         },
                         new
@@ -450,9 +453,9 @@ namespace ArifTanPortfolio.Migrations
                             Id = 18,
                             Category = "Cloud Platforms",
                             Icon = "devicon-azure-plain",
-                            IsVisible = false,
+                            IsVisible = true,
                             Name = "Azure",
-                            Proficiency = 9,
+                            Proficiency = 7,
                             SortOrder = 1
                         },
                         new
@@ -460,9 +463,9 @@ namespace ArifTanPortfolio.Migrations
                             Id = 19,
                             Category = "Cloud Platforms",
                             Icon = "fas fa-bolt",
-                            IsVisible = false,
+                            IsVisible = true,
                             Name = "Power Automate",
-                            Proficiency = 9,
+                            Proficiency = 7,
                             SortOrder = 2
                         },
                         new
@@ -470,7 +473,7 @@ namespace ArifTanPortfolio.Migrations
                             Id = 20,
                             Category = "DevOps",
                             Icon = "devicon-docker-plain",
-                            IsVisible = false,
+                            IsVisible = true,
                             Name = "Docker",
                             Proficiency = 7,
                             SortOrder = 1
@@ -482,7 +485,7 @@ namespace ArifTanPortfolio.Migrations
                             Icon = "devicon-git-plain",
                             IsVisible = true,
                             Name = "Git",
-                            Proficiency = 9,
+                            Proficiency = 8,
                             SortOrder = 2
                         },
                         new
@@ -490,7 +493,7 @@ namespace ArifTanPortfolio.Migrations
                             Id = 22,
                             Category = "DevOps",
                             Icon = "devicon-azure-plain",
-                            IsVisible = false,
+                            IsVisible = true,
                             Name = "Azure DevOps",
                             Proficiency = 7,
                             SortOrder = 3
