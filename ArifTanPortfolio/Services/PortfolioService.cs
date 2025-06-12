@@ -63,7 +63,8 @@ namespace ArifTanPortfolio.Services
         {
             return await _context.Skills
                 .Where(s => s.Category == category && s.IsVisible)
-                .OrderBy(s => s.SortOrder)
+                .OrderByDescending(s => s.Proficiency)
+                .ThenBy(s => s.SortOrder)
                 .ToListAsync();
         }
 

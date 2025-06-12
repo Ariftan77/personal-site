@@ -138,42 +138,21 @@
             <div class="col-lg-3 col-md-6">
                 <div class="skill-category">
                     <h3><i class="fas fa-code text-primary me-2"></i>Languages</h3>
-                    <div class="skill-item">
-                        <span class="skill-name">C#</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-primary" style="width: 90%"></div>
+                    @if (Model.ProgrammingLanguages?.Any() == true)
+                    {
+                        foreach (var skill in Model.ProgrammingLanguages)
+                        {
+                            <div class="skill-item">
+                                <span class="skill-name">@skill.Name</span>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="progress" style="width: 100px; height: 8px;">
+                                        <div class="progress-bar bg-primary" style="width: @(skill.Proficiency * 10)%"></div>
+                                    </div>
+                                    <span class="skill-level">@skill.ProficientcyLevel</span>
+                                </div>
                             </div>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">JavaScript</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-primary" style="width: 80%"></div>
-                            </div>
-                            <span class="skill-level">Advanced</span>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Python</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-primary" style="width: 70%"></div>
-                            </div>
-                            <span class="skill-level">Intermediate</span>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">TypeScript</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-primary" style="width: 75%"></div>
-                            </div>
-                            <span class="skill-level">Advanced</span>
-                        </div>
-                    </div>
+                        }
+                    }
                 </div>
             </div>
             
@@ -181,42 +160,21 @@
             <div class="col-lg-3 col-md-6">
                 <div class="skill-category">
                     <h3><i class="fas fa-layer-group text-primary me-2"></i>Frameworks</h3>
-                    <div class="skill-item">
-                        <span class="skill-name">ASP.NET Core</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-success" style="width: 90%"></div>
+                    @if (Model.Frameworks?.Any() == true)
+                    {
+                        foreach (var skill in Model.Frameworks)
+                        {
+                            <div class="skill-item">
+                                <span class="skill-name">@skill.Name</span>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="progress" style="width: 100px; height: 8px;">
+                                        <div class="progress-bar bg-primary" style="width: @(skill.Proficiency * 10)%"></div>
+                                    </div>
+                                    <span class="skill-level">@skill.ProficientcyLevel</span>
+                                </div>
                             </div>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Entity Framework</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-success" style="width: 85%"></div>
-                            </div>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">React</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-success" style="width: 70%"></div>
-                            </div>
-                            <span class="skill-level">Intermediate</span>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Node.js</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-success" style="width: 75%"></div>
-                            </div>
-                            <span class="skill-level">Advanced</span>
-                        </div>
-                    </div>
+                        }
+                    }
                 </div>
             </div>
             
@@ -224,42 +182,21 @@
             <div class="col-lg-3 col-md-6">
                 <div class="skill-category">
                     <h3><i class="fas fa-cloud text-primary me-2"></i>Cloud & DevOps</h3>
-                    <div class="skill-item">
-                        <span class="skill-name">Azure</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-warning" style="width: 80%"></div>
+                    @if (Model.CloudsAndDevOps?.Any() == true)
+                    {
+                        foreach (var skill in Model.CloudsAndDevOps)
+                        {
+                            <div class="skill-item">
+                                <span class="skill-name">@skill.Name</span>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="progress" style="width: 100px; height: 8px;">
+                                        <div class="progress-bar bg-primary" style="width: @(skill.Proficiency * 10)%"></div>
+                                    </div>
+                                    <span class="skill-level">@skill.ProficientcyLevel</span>
+                                </div>
                             </div>
-                            <span class="skill-level">Advanced</span>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Docker</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-warning" style="width: 75%"></div>
-                            </div>
-                            <span class="skill-level">Advanced</span>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Git/GitHub</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-warning" style="width: 85%"></div>
-                            </div>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">CI/CD</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-warning" style="width: 70%"></div>
-                            </div>
-                            <span class="skill-level">Intermediate</span>
-                        </div>
-                    </div>
+                        }
+                    }
                 </div>
             </div>
             
@@ -267,42 +204,21 @@
             <div class="col-lg-3 col-md-6">
                 <div class="skill-category">
                     <h3><i class="fas fa-database text-primary me-2"></i>Databases</h3>
-                    <div class="skill-item">
-                        <span class="skill-name">SQL Server</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-info" style="width: 85%"></div>
+                    @if (Model.Databases?.Any() == true)
+                    {
+                        foreach (var skill in Model.Databases)
+                        {
+                            <div class="skill-item">
+                                <span class="skill-name">@skill.Name</span>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="progress" style="width: 100px; height: 8px;">
+                                        <div class="progress-bar bg-primary" style="width: @(skill.Proficiency * 10)%"></div>
+                                    </div>
+                                    <span class="skill-level">@skill.ProficientcyLevel</span>
+                                </div>
                             </div>
-                            <span class="skill-level">Expert</span>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">PostgreSQL</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-info" style="width: 70%"></div>
-                            </div>
-                            <span class="skill-level">Intermediate</span>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">MongoDB</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-info" style="width: 65%"></div>
-                            </div>
-                            <span class="skill-level">Intermediate</span>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <span class="skill-name">Redis</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="progress" style="width: 100px; height: 8px;">
-                                <div class="progress-bar bg-info" style="width: 60%"></div>
-                            </div>
-                            <span class="skill-level">Basic</span>
-                        </div>
-                    </div>
+                        }
+                    }
                 </div>
             </div>
         </div>
