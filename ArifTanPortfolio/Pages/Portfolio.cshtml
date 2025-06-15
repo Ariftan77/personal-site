@@ -155,19 +155,19 @@
     </div>
 </section>
 
-<!-- Project Modals -->
+<!-- Project Modals with Enhanced Dark Theme Support -->
 @if (Model.Projects?.Any() == true)
 {
     @foreach (var project in Model.Projects)
     {
-        <div class="modal fade" id="projectModal@(project.Id)" tabindex="-1" aria-labelledby="projectModalLabel@(project.Id)" aria-hidden="true">
+        <div class="modal fade modal-dark-theme" id="projectModal@(project.Id)" tabindex="-1" aria-labelledby="projectModalLabel@(project.Id)" aria-hidden="true">
             <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="projectModalLabel@(project.Id)">@project.Name</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-content modal-content-themed">
+                    <div class="modal-header modal-header-themed">
+                        <h5 class="modal-title modal-title-themed" id="projectModalLabel@(project.Id)">@project.Name</h5>
+                        <button type="button" class="btn-close modal-close-themed" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body modal-body-themed">
                         @if (!string.IsNullOrEmpty(project.FeaturedImage))
                         {
                             <img src="@project.FeaturedImage" class="img-fluid rounded mb-4" alt="@project.Name">
@@ -175,41 +175,41 @@
                         
                         <div class="mb-3">
                             <span class="badge bg-primary me-2">@project.Category</span>
-                            <small class="text-muted">
+                            <small class="modal-text-muted">
                                 @project.StartDate.ToString("MMM yyyy") - @(project.EndDate?.ToString("MMM yyyy") ?? "Present")
                             </small>
                         </div>
                         
-                        <h6>Project Overview</h6>
-                        <p>@(project.LongDescription ?? project.Description)</p>
+                        <h6 class="modal-heading">Project Overview</h6>
+                        <p class="modal-text">@(project.LongDescription ?? project.Description)</p>
                         
                         @if (!string.IsNullOrEmpty(project.Challenges))
                         {
-                            <h6>Challenges</h6>
-                            <p>@project.Challenges</p>
+                            <h6 class="modal-heading">Challenges</h6>
+                            <p class="modal-text">@project.Challenges</p>
                         }
                         
                         @if (!string.IsNullOrEmpty(project.Solutions))
                         {
-                            <h6>Solutions</h6>
-                            <p>@project.Solutions</p>
+                            <h6 class="modal-heading">Solutions</h6>
+                            <p class="modal-text">@project.Solutions</p>
                         }
                         
                         @if (!string.IsNullOrEmpty(project.LessonsLearned))
                         {
-                            <h6>Lessons Learned</h6>
-                            <p>@project.LessonsLearned</p>
+                            <h6 class="modal-heading">Lessons Learned</h6>
+                            <p class="modal-text">@project.LessonsLearned</p>
                         }
                         
-                        <h6>Technologies Used</h6>
+                        <h6 class="modal-heading">Technologies Used</h6>
                         <div class="mb-3">
                             @foreach (var tech in project.Technologies.Split(','))
                             {
-                                <span class="badge bg-light text-dark me-1 mb-1">@tech.Trim()</span>
+                                <span class="tech-badge-themed me-1 mb-1">@tech.Trim()</span>
                             }
                         </div>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer modal-footer-themed">
                         @if (!string.IsNullOrEmpty(project.LiveUrl))
                         {
                             <a href="@project.LiveUrl" class="btn btn-primary" target="_blank">
@@ -218,7 +218,7 @@
                         }
                         @if (!string.IsNullOrEmpty(project.GitHubUrl))
                         {
-                            <a href="@project.GitHubUrl" class="btn btn-outline-secondary" target="_blank">
+                            <a href="@project.GitHubUrl" class="btn btn-outline-secondary modal-btn-outline" target="_blank">
                                 <i class="fab fa-github me-1"></i>Source Code
                             </a>
                         }
@@ -229,6 +229,7 @@
         </div>
     }
 }
+
 <!-- Call to Action -->
 <section class="bg-primary text-white py-5">
     <div class="container">
@@ -240,10 +241,10 @@
                     Let's discuss how we can create something amazing together.
                 </p>
                 <div class="d-flex flex-wrap justify-content-center gap-3">
-                    <a href="/Contact" class="btn btn-warning btn-lg px-4">
+                    <a href="/Contact" class="btn btn-warning text-dark btn-lg px-4">
                         <i class="fas fa-envelope me-2"></i>Start a Project
                     </a>
-                    <a href="~/files/arif-tan-resume.pdf" class="btn btn-outline-light btn-lg px-4" target="_blank">
+                    <a href="~/files/ariftan_cv.pdf" class="btn btn-outline-light btn-lg px-4" target="_blank">
                         <i class="fas fa-download me-2"></i>Download Resume
                     </a>
                 </div>

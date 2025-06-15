@@ -27,20 +27,10 @@ namespace ArifTanPortfolio.Pages
             {
                 // Load top skills for the About page
                 ProgrammingLanguages = await _portfolioService.GetSkillsByCategoryAsync("Programming Languages");
-                Frameworks = await _portfolioService.GetSkillsByCategoryAsync("Web Frameworks");
+                Frameworks = await _portfolioService.GetSkillsByCategoryAsync("Frameworks");
                 Databases = await _portfolioService.GetSkillsByCategoryAsync("Databases");
-                var devOps = await _portfolioService.GetSkillsByCategoryAsync("DevOps");
-                Frontends = await _portfolioService.GetSkillsByCategoryAsync("Frontend");
-                var clouds = await _portfolioService.GetSkillsByCategoryAsync("Cloud Platforms");
+                CloudsAndDevOps = await _portfolioService.GetSkillsByCategoryAsync("Cloud & DevOps");
 
-                if (devOps != null && devOps.Count > 0)
-                {
-                    CloudsAndDevOps.AddRange(devOps);
-                }
-                if (clouds != null && clouds.Count > 0)
-                {
-                    CloudsAndDevOps.AddRange(clouds);
-                }   
             }
             catch (Exception ex)
             {
@@ -50,7 +40,6 @@ namespace ArifTanPortfolio.Pages
                 Frameworks = new List<Skill>();
                 Databases = new List<Skill>();
                 CloudsAndDevOps = new List<Skill>();
-                Frontends = new List<Skill>();
             }
         }
     }
