@@ -3,6 +3,7 @@ using System;
 using ArifTanPortfolio.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArifTanPortfolio.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250617162440_updateProjectSeed")]
+    partial class updateProjectSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
@@ -209,7 +212,7 @@ namespace ArifTanPortfolio.Migrations
                             Name = "Multi-Warehouse Management System",
                             Solutions = "Implemented SignalR for real-time location grid dashboard, designed multi-tenant domain architecture with client isolation using DDD bounded contexts, applied Clean Architecture with separated domain/application/infrastructure layers, optimized database queries with strategic indexing, created robust API layer following CQRS patterns, implemented comprehensive logging and monitoring with AWS services",
                             SortOrder = 1,
-                            StartDate = new DateTime(2025, 5, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Technologies = "ASP.NET Core 8.0, PostgreSQL, SignalR, Entity Framework Core, Clean Architecture, Domain-Driven Design, Tailwind CSS, AWS (S3, EC2, RDS), REST APIs, JavaScript"
                         },
                         new
@@ -286,7 +289,7 @@ namespace ArifTanPortfolio.Migrations
                             Category = "Web Development",
                             Challenges = "Professional design and user experience, responsive layout across devices, SEO optimization, content management system design, performance optimization, modern web development practices",
                             Description = "Professional portfolio website showcasing software engineering expertise and career journey",
-                            EndDate = new DateTime(2025, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageGallery = "",
                             IsFeatured = false,
                             LessonsLearned = "Modern web development practices, responsive design principles, SEO optimization techniques, personal branding through technology, importance of professional online presence in career development",
@@ -295,7 +298,7 @@ namespace ArifTanPortfolio.Migrations
                             Name = "Personal Portfolio Website",
                             Solutions = "Implemented clean and modern design with Bootstrap 5, created responsive layouts for all device sizes, optimized for search engines with proper meta tags and structured data, built custom CMS functionality with Entity Framework, optimized loading performance and user experience",
                             SortOrder = 6,
-                            StartDate = new DateTime(2025, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2024, 11, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Technologies = "ASP.NET Core 8.0, Razor Pages, Bootstrap 5, Entity Framework Core, SQLite, HTML/CSS, JavaScript"
                         });
                 });
