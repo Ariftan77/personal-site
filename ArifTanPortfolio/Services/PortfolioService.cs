@@ -1,88 +1,503 @@
 using Microsoft.EntityFrameworkCore;
 using ArifTanPortfolio.Data;
 using ArifTanPortfolio.Models;
+using Microsoft.Extensions.Caching.Memory;
+using System.ComponentModel.DataAnnotations;
 
 namespace ArifTanPortfolio.Services
 {
     public class PortfolioService : IPortfolioService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMemoryCache _cache;
         private readonly ILogger<PortfolioService> _logger;
+        
+        // Cache keys
+        private const string FEATURED_PROJECTS_KEY = "featured_projects";
+        private const string ALL_PROJECTS_KEY = "all_projects";
+        private const string SKILL_CATEGORIES_KEY = "skill_categories";
+        private const string TOP_SKILLS_KEY = "top_skills";
+        
+        // Cache expiration times
+        private readonly TimeSpan _defaultCacheExpiry = TimeSpan.FromMinutes(30);
+        private readonly TimeSpan _longCacheExpiry = TimeSpan.FromHours(2);
 
-        public PortfolioService(ApplicationDbContext context, ILogger<PortfolioService> logger)
+        public PortfolioService(
+            ApplicationDbContext context, 
+            IMemoryCache cache,
+            ILogger<PortfolioService> logger)
         {
             _context = context;
+            _cache = cache;
             _logger = logger;
         }
 
+        // =======================================================================================
+        // EXISTING METHODS - ENHANCED WITH CACHING & ERROR HANDLING
+        // =======================================================================================
+
         public async Task<List<Project>> GetFeaturedProjectsAsync()
         {
-            return await _context.Projects
-                .Where(p => p.IsFeatured)
-                .OrderBy(p => p.SortOrder)
-                .ToListAsync();
+            try
+            {
+                // Check cache first
+                if (_cache.TryGetValue(FEATURED_PROJECTS_KEY, out List<Project>? cachedProjects))
+                {
+                    _logger.LogDebug("Retrieved featured projects from cache");
+                    return cachedProjects!;
+                }
+
+                // Get from database with optimizations
+                var projects = await _context.Projects
+                    .Where(p => p.IsFeatured)
+                    .OrderBy(p => p.SortOrder)
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                // Cache the results
+                _cache.Set(FEATURED_PROJECTS_KEY, projects, _defaultCacheExpiry);
+                _logger.LogInformation("Retrieved {Count} featured projects from database", projects.Count);
+                
+                return projects;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving featured projects");
+                // Return empty list instead of throwing - graceful degradation
+                return new List<Project>();
+            }
         }
 
         public async Task<List<Project>> GetAllProjectsAsync()
         {
-            return await _context.Projects
-                .OrderBy(p => p.SortOrder)
-                .ThenByDescending(p => p.StartDate)
-                .ToListAsync();
+            try
+            {
+                if (_cache.TryGetValue(ALL_PROJECTS_KEY, out List<Project>? cachedProjects))
+                {
+                    return cachedProjects!;
+                }
+
+                var projects = await _context.Projects
+                    .OrderBy(p => p.SortOrder)
+                    .ThenByDescending(p => p.StartDate)
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                _cache.Set(ALL_PROJECTS_KEY, projects, _defaultCacheExpiry);
+                _logger.LogInformation("Retrieved {Count} total projects", projects.Count);
+                
+                return projects;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving all projects");
+                return new List<Project>();
+            }
         }
 
         public async Task<Project?> GetProjectByIdAsync(int id)
         {
-            return await _context.Projects.FindAsync(id);
+            try
+            {
+                if (id <= 0)
+                {
+                    _logger.LogWarning("Invalid project ID: {ProjectId}", id);
+                    return null;
+                }
+
+                var project = await _context.Projects
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(p => p.Id == id);
+
+                if (project == null)
+                {
+                    _logger.LogWarning("Project not found with ID: {ProjectId}", id);
+                }
+
+                return project;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving project with ID {ProjectId}", id);
+                return null;
+            }
         }
 
         public async Task<List<BlogPost>> GetRecentBlogPostsAsync(int count = 3)
         {
-            return await _context.BlogPosts
-                .Where(b => b.IsPublished)
-                .OrderByDescending(b => b.PublishedDate)
-                .Take(count)
-                .ToListAsync();
+            try
+            {
+                if (count <= 0 || count > 50)
+                {
+                    _logger.LogWarning("Invalid count parameter: {Count}", count);
+                    count = 3; // Default fallback
+                }
+
+                var cacheKey = $"recent_blog_posts_{count}";
+                if (_cache.TryGetValue(cacheKey, out List<BlogPost>? cachedPosts))
+                {
+                    return cachedPosts!;
+                }
+
+                var posts = await _context.BlogPosts
+                    .Where(b => b.IsPublished)
+                    .OrderByDescending(b => b.PublishedDate)
+                    .Take(count)
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                _cache.Set(cacheKey, posts, _defaultCacheExpiry);
+                _logger.LogInformation("Retrieved {Count} recent blog posts", posts.Count);
+                
+                return posts;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving recent blog posts");
+                return new List<BlogPost>();
+            }
         }
 
         public async Task<List<BlogPost>> GetPublishedBlogPostsAsync()
         {
-            return await _context.BlogPosts
-                .Where(b => b.IsPublished)
-                .OrderByDescending(b => b.PublishedDate)
-                .ToListAsync();
+            try
+            {
+                const string cacheKey = "published_blog_posts";
+                if (_cache.TryGetValue(cacheKey, out List<BlogPost>? cachedPosts))
+                {
+                    return cachedPosts!;
+                }
+
+                var posts = await _context.BlogPosts
+                    .Where(b => b.IsPublished)
+                    .OrderByDescending(b => b.PublishedDate)
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                _cache.Set(cacheKey, posts, _defaultCacheExpiry);
+                _logger.LogInformation("Retrieved {Count} published blog posts", posts.Count);
+                
+                return posts;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving published blog posts");
+                return new List<BlogPost>();
+            }
         }
 
         public async Task<BlogPost?> GetBlogPostBySlugAsync(string slug)
         {
-            return await _context.BlogPosts
-                .FirstOrDefaultAsync(b => b.Slug == slug && b.IsPublished);
+            try
+            {
+                if (string.IsNullOrWhiteSpace(slug))
+                {
+                    _logger.LogWarning("Invalid slug parameter: {Slug}", slug);
+                    return null;
+                }
+
+                var normalizedSlug = slug.Trim().ToLowerInvariant();
+                var cacheKey = $"blog_post_{normalizedSlug}";
+                
+                if (_cache.TryGetValue(cacheKey, out BlogPost? cachedPost))
+                {
+                    return cachedPost;
+                }
+
+                var post = await _context.BlogPosts
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(b => b.Slug.ToLower() == normalizedSlug && b.IsPublished);
+
+                if (post != null)
+                {
+                    _cache.Set(cacheKey, post, _longCacheExpiry);
+                    _logger.LogInformation("Retrieved blog post by slug: {Slug}", slug);
+                }
+                else
+                {
+                    _logger.LogWarning("Blog post not found with slug: {Slug}", slug);
+                }
+
+                return post;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving blog post with slug {Slug}", slug);
+                return null;
+            }
         }
 
         public async Task<List<Skill>> GetSkillsByCategoryAsync(string category)
         {
-            return await _context.Skills
-                .Where(s => s.Category == category && s.IsVisible)
-                .OrderByDescending(s => s.Proficiency)
-                .ThenBy(s => s.SortOrder)
-                .ToListAsync();
+            try
+            {
+                if (string.IsNullOrWhiteSpace(category))
+                {
+                    _logger.LogWarning("Invalid category parameter: {Category}", category);
+                    return new List<Skill>();
+                }
+
+                var normalizedCategory = category.Trim();
+                var cacheKey = $"skills_category_{normalizedCategory}";
+                
+                if (_cache.TryGetValue(cacheKey, out List<Skill>? cachedSkills))
+                {
+                    return cachedSkills!;
+                }
+
+                var skills = await _context.Skills
+                    .Where(s => s.Category == normalizedCategory && s.IsVisible)
+                    .OrderByDescending(s => s.Proficiency)
+                    .ThenBy(s => s.SortOrder)
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                _cache.Set(cacheKey, skills, _longCacheExpiry);
+                _logger.LogInformation("Retrieved {Count} skills for category: {Category}", 
+                    skills.Count, category);
+                
+                return skills;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving skills for category {Category}", category);
+                return new List<Skill>();
+            }
         }
 
         public async Task<List<Skill>> GetTopSkillsAsync(int count = 8)
         {
-            return await _context.Skills
-                .Where(s => s.IsVisible)
-                .OrderByDescending(s => s.Proficiency)
-                .ThenBy(s => s.SortOrder)
-                .Take(count)
-                .ToListAsync();
+            try
+            {
+                if (count <= 0 || count > 100)
+                {
+                    _logger.LogWarning("Invalid count parameter: {Count}", count);
+                    count = 8; // Default fallback
+                }
+
+                var cacheKey = $"{TOP_SKILLS_KEY}_{count}";
+                if (_cache.TryGetValue(cacheKey, out List<Skill>? cachedSkills))
+                {
+                    return cachedSkills!;
+                }
+
+                var skills = await _context.Skills
+                    .Where(s => s.IsVisible)
+                    .OrderByDescending(s => s.Proficiency)
+                    .ThenBy(s => s.SortOrder)
+                    .Take(count)
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                _cache.Set(cacheKey, skills, _longCacheExpiry);
+                _logger.LogInformation("Retrieved top {Count} skills", skills.Count);
+                
+                return skills;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving top skills");
+                return new List<Skill>();
+            }
         }
 
         public async Task SaveContactMessageAsync(ContactMessage message)
         {
-            message.DateSent = DateTime.UtcNow;
-            _context.ContactMessages.Add(message);
-            await _context.SaveChangesAsync();
+            try
+            {
+                // Validate input
+                if (!await ValidateContactMessageAsync(message))
+                {
+                    _logger.LogWarning("Contact message validation failed for {Email}", message.Email);
+                    throw new ValidationException("Contact message validation failed");
+                }
+
+                // Sanitize and normalize data
+                message.Name = message.Name.Trim();
+                message.Email = message.Email.Trim().ToLowerInvariant();
+                message.Subject = message.Subject?.Trim();
+                message.Message = message.Message.Trim();
+                message.Company = message.Company?.Trim();
+                message.Phone = message.Phone?.Trim();
+                message.DateSent = DateTime.UtcNow;
+                message.IsRead = false;
+
+                // Check for rate limiting (simple spam protection)
+                var recentMessageCount = await _context.ContactMessages
+                    .Where(cm => cm.Email == message.Email && 
+                                cm.DateSent > DateTime.UtcNow.AddHours(-1))
+                    .CountAsync();
+
+                if (recentMessageCount >= 3)
+                {
+                    _logger.LogWarning("Rate limit exceeded for email: {Email}", message.Email);
+                    throw new InvalidOperationException("Too many messages sent recently. Please try again later.");
+                }
+
+                _context.ContactMessages.Add(message);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Contact message saved successfully from {Email} with ID {MessageId}", 
+                    message.Email, message.Id);
+            }
+            catch (Exception ex) when (!(ex is ValidationException || ex is InvalidOperationException))
+            {
+                _logger.LogError(ex, "Error saving contact message from {Email}", message.Email);
+                throw new Exception("Failed to save contact message", ex);
+            }
+        }
+
+        // =======================================================================================
+        // NEW ENHANCED METHODS
+        // =======================================================================================
+
+        public async Task<List<string>> GetSkillCategoriesAsync()
+        {
+            try
+            {
+                if (_cache.TryGetValue(SKILL_CATEGORIES_KEY, out List<string>? cachedCategories))
+                {
+                    return cachedCategories!;
+                }
+
+                var categories = await _context.Skills
+                    .Where(s => s.IsVisible)
+                    .Select(s => s.Category)
+                    .Distinct()
+                    .OrderBy(c => c)
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                _cache.Set(SKILL_CATEGORIES_KEY, categories, _longCacheExpiry);
+                _logger.LogInformation("Retrieved {Count} skill categories", categories.Count);
+                
+                return categories;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving skill categories");
+                return new List<string>();
+            }
+        }
+
+        public async Task<Dictionary<string, int>> GetContactMessageStatsAsync()
+        {
+            try
+            {
+                var stats = new Dictionary<string, int>();
+                
+                var totalMessages = await _context.ContactMessages.CountAsync();
+                var unreadMessages = await _context.ContactMessages.Where(cm => !cm.IsRead).CountAsync();
+                var todayMessages = await _context.ContactMessages
+                    .Where(cm => cm.DateSent.Date == DateTime.UtcNow.Date)
+                    .CountAsync();
+                var thisWeekMessages = await _context.ContactMessages
+                    .Where(cm => cm.DateSent >= DateTime.UtcNow.AddDays(-7))
+                    .CountAsync();
+
+                stats.Add("Total", totalMessages);
+                stats.Add("Unread", unreadMessages);
+                stats.Add("Today", todayMessages);
+                stats.Add("ThisWeek", thisWeekMessages);
+
+                _logger.LogInformation("Retrieved contact message statistics");
+                return stats;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving contact message statistics");
+                return new Dictionary<string, int>();
+            }
+        }
+
+        public async Task<bool> ValidateContactMessageAsync(ContactMessage message)
+        {
+            try
+            {
+                // Standard model validation
+                var validationResults = new List<ValidationResult>();
+                var validationContext = new ValidationContext(message);
+                
+                if (!Validator.TryValidateObject(message, validationContext, validationResults, true))
+                {
+                    var errors = validationResults.Select(vr => vr.ErrorMessage ?? "Unknown validation error").ToList();
+                    _logger.LogWarning("Contact message validation failed: {Errors}", string.Join(", ", errors));
+                    return false;
+                }
+
+                // Additional business validation
+                if (string.IsNullOrWhiteSpace(message.Name) || message.Name.Length < 2)
+                {
+                    _logger.LogWarning("Invalid name in contact message: {Name}", message.Name);
+                    return false;
+                }
+
+                if (string.IsNullOrWhiteSpace(message.Email) || !IsValidEmail(message.Email))
+                {
+                    _logger.LogWarning("Invalid email in contact message: {Email}", message.Email);
+                    return false;
+                }
+
+                if (string.IsNullOrWhiteSpace(message.Message) || message.Message.Length < 10)
+                {
+                    _logger.LogWarning("Invalid message content in contact message");
+                    return false;
+                }
+
+                // Simple spam detection
+                var messageContent = (message.Name + " " + message.Message + " " + message.Subject).ToLowerInvariant();
+                var suspiciousPatterns = new[] { "viagra", "casino", "loan", "bitcoin", "make money fast" };
+                
+                if (suspiciousPatterns.Any(pattern => messageContent.Contains(pattern)))
+                {
+                    _logger.LogWarning("Suspicious content detected in contact message from {Email}", message.Email);
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error validating contact message");
+                return false;
+            }
+        }
+
+        // =======================================================================================
+        // HELPER METHODS
+        // =======================================================================================
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // Method to clear cache when data is updated
+        public void ClearCache()
+        {
+            var cacheKeys = new[]
+            {
+                FEATURED_PROJECTS_KEY,
+                ALL_PROJECTS_KEY,
+                SKILL_CATEGORIES_KEY,
+                TOP_SKILLS_KEY,
+                "published_blog_posts"
+            };
+
+            foreach (var key in cacheKeys)
+            {
+                _cache.Remove(key);
+            }
+
+            _logger.LogInformation("Cache cleared for portfolio service");
         }
     }
 }

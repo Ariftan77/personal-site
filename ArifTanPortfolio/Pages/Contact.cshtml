@@ -296,7 +296,11 @@
 
 <!-- Success/Error Messages -->
 <div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 1050; max-width: 400px;"></div>
-
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/contact-form.js" asp-append-version="true"></script>
+}
+@* 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     
@@ -384,4 +388,4 @@
             });
         }
     </script>
-}
+} *@

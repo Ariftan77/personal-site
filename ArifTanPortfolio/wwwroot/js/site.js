@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize all components
     initNavigation();
     initAnimations();
-    initContactForm();
+    // initContactForm();
     initSkillAnimations();
     initSmoothScroll();
     initImageLazyLoading();
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initPortfolioFilter();
     initBlogSearch();
     initCategoryFilter();
-    initContactFormValidation();
+    // initContactFormValidation();
     initReadingProgress();
     initEnhancedAnimations();
 });

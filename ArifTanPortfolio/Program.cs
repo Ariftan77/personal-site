@@ -22,6 +22,21 @@ builder.Services.AddMemoryCache();
 // Add HTTP client for external API calls if needed
 builder.Services.AddHttpClient();
 
+// Add antiforgery services for better security
+builder.Services.AddAntiforgery(options =>
+{
+    options.HeaderName = "X-CSRF-TOKEN";
+    options.SuppressXFrameOptionsHeader = false;
+});
+
+// Configure logging for better debugging
+builder.Logging.AddConsole();
+if (builder.Environment.IsDevelopment())
+{
+    builder.Logging.SetMinimumLevel(LogLevel.Debug);
+}
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline

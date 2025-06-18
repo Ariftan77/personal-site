@@ -13,5 +13,10 @@ namespace ArifTanPortfolio.Services
         Task<List<Skill>> GetSkillsByCategoryAsync(string category);
         Task<List<Skill>> GetTopSkillsAsync(int count = 8);
         Task SaveContactMessageAsync(ContactMessage message);
+
+        // Add these NEW methods for enhanced functionality
+        Task<List<string>> GetSkillCategoriesAsync();
+        Task<Dictionary<string, int>> GetContactMessageStatsAsync();
+        Task<bool> ValidateContactMessageAsync(ContactMessage message);
     }
 }
