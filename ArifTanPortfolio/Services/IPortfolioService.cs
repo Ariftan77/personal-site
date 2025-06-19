@@ -18,5 +18,15 @@ namespace ArifTanPortfolio.Services
         Task<List<string>> GetSkillCategoriesAsync();
         Task<Dictionary<string, int>> GetContactMessageStatsAsync();
         Task<bool> ValidateContactMessageAsync(ContactMessage message);
+
+        // New blog-specific methods
+        // Task<BlogPost?> GetBlogPostBySlugAsync(string slug);
+        Task<List<BlogPost>> GetRelatedBlogPostsAsync(int currentPostId, string? tags, int count = 3);
+        Task<(BlogPost? Previous, BlogPost? Next)> GetAdjacentBlogPostsAsync(int currentPostId);
+        Task IncrementBlogPostViewsAsync(int blogPostId);
+        Task<List<BlogPost>> SearchBlogPostsAsync(string searchTerm);
+        Task<List<BlogPost>> GetBlogPostsByTagAsync(string tag);
+        Task<List<string>> GetAllBlogTagsAsync();
+        Task<List<BlogPost>> GetBlogPostsByCategoryAsync(string category);
     }
 }

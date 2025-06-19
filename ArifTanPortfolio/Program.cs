@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ArifTanPortfolio.Data;
 using ArifTanPortfolio.Services;
+using Markdig;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,20 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Add custom services
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
-
+// Configure Markdig pipeline for blog content
+builder.Services.AddSingleton<MarkdownPipeline>(provider =>
+{
+    return new MarkdownPipelineBuilder()
+        .UseAdvancedExtensions() // Includes tables, footnotes, etc.
+        // .UseSyntaxHighlighting() // Code syntax highlighting
+        .UseEmojiAndSmiley() // Emoji support
+        .UseBootstrap() // Bootstrap-compatible HTML output
+        .UsePipeTables() // GitHub-style tables
+        .UseTaskLists() // GitHub-style task lists
+        .UseAutoLinks() // Auto-convert URLs to links
+        .UseGenericAttributes() // CSS classes and attributes
+        .Build();
+});
 // Add memory cache
 builder.Services.AddMemoryCache();
 
@@ -57,15 +71,15 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 // Custom route for blog posts
-app.MapGet("/blog/{slug}", async (string slug, IPortfolioService portfolioService) =>
-{
-    var post = await portfolioService.GetBlogPostBySlugAsync(slug);
-    if (post == null)
-    {
-        return Results.NotFound();
-    }
-    return Results.Redirect($"/Blog/Post?slug={slug}");
-});
+// app.MapGet("/blog/{slug}", async (string slug, IPortfolioService portfolioService) =>
+// {
+//     var post = await portfolioService.GetBlogPostBySlugAsync(slug);
+//     if (post == null)
+//     {
+//         return Results.NotFound();
+//     }
+//     return Results.Redirect($"/Blog/Post?slug={slug}");
+// });
 
 // Ensure database is created
 using (var scope = app.Services.CreateScope())

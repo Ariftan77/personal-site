@@ -1,0 +1,87 @@
+@page "/rss"
+@model RssFeedModel
+@{
+    Layout = null;
+    Response.ContentType = "application/rss+xml; charset=utf-8";
+    
+    string GetSafeExcerpt(BlogPost post)
+    {
+        if (!string.IsNullOrEmpty(post.Excerpt))
+            return post.Excerpt;
+            
+        if (!string.IsNullOrEmpty(post.Content))
+        {
+            var plainText = System.Text.RegularExpressions.Regex.Replace(post.Content, "<.*?>", "");
+            return plainText.Length > 200 ? plainText.Substring(0, 200) + "..." : plainText;
+        }
+        
+        return "Read the full article on Arif Tan's blog.";
+    }
+    
+    string GetSafeContent(BlogPost post)
+    {
+        return post.Content ?? "";
+    }
+    
+    string GetImageType(string? imagePath)
+    {
+        if (string.IsNullOrEmpty(imagePath)) return "image/jpeg";
+        
+        var extension = System.IO.Path.GetExtension(imagePath).ToLower();
+        return extension switch
+        {
+            ".png" => "image/png",
+            ".gif" => "image/gif",
+            ".webp" => "image/webp",
+            _ => "image/jpeg"
+        };
+    }
+}<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>Arif Tan - Tech Blog</title>
+        <link>@($"{ViewContext.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}")</link>
+        <description>Technical insights, career development, and software engineering thoughts from Arif Tan - a software engineer transitioning from Batam to global tech companies.</description>
+        <language>en-us</language>
+        <copyright>Copyright @DateTime.Now.Year Arif Tan</copyright>
+        <managingEditor>contact@Model.Domain (Arif Tan)</managingEditor>
+        <webMaster>contact@Model.Domain (Arif Tan)</webMaster>
+        <pubDate>@DateTime.UtcNow.ToString("ddd, dd MMM yyyy HH:mm:ss") GMT</pubDate>
+        <lastBuildDate>@DateTime.UtcNow.ToString("ddd, dd MMM yyyy HH:mm:ss") GMT</lastBuildDate>
+        <generator>ArifTan Portfolio Website v1.0</generator>
+        <atom:link href="@($"{ViewContext.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}/rss")" rel="self" type="application/rss+xml" />
+        <image>
+            <url>@($"{ViewContext.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}/images/ariftan-logo.png")</url>
+            <title>Arif Tan - Tech Blog</title>
+            <link>@($"{ViewContext.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}")</link>
+            <width>144</width>
+            <height>144</height>
+        </image>
+        
+        @foreach (var post in Model.BlogPosts)
+        {
+            <title><![CDATA[@post.Title]]></title>
+            @* <link>@($"{ViewContext.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}/blog/{post.Slug}")</link> *@
+            <description><![CDATA[@GetSafeExcerpt(post)]]></description>
+            <content:encoded><![CDATA[@Html.Raw(GetSafeContent(post))]]></content:encoded>
+            <pubDate>@(post.PublishedDate?.ToString("ddd, dd MMM yyyy HH:mm:ss") ?? DateTime.UtcNow.ToString("ddd, dd MMM yyyy HH:mm:ss")) GMT</pubDate>
+            <guid isPermaLink="true">@($"{ViewContext.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}/blog/{post.Slug}")</guid>
+            <author>@(post.AuthorEmail ?? "contact@" + Model.Domain) (@(post.Author ?? "Arif Tan"))</author>
+            @if (!string.IsNullOrEmpty(post.Category))
+            {
+            <category><![CDATA[@post.Category]]></category>
+            }
+            @if (!string.IsNullOrEmpty(post.Tags))
+            {
+                @foreach (var tag in post.Tags.Split(',').Take(5).Where(t => !string.IsNullOrWhiteSpace(t)))
+                {
+            <category><![CDATA[@tag.Trim()]]></category>
+                }
+            }
+            @if (!string.IsNullOrEmpty(post.FeaturedImage))
+            {
+            <enclosure url="@($"{ViewContext.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}{post.FeaturedImage}")" type="@GetImageType(post.FeaturedImage)" />
+            }
+        }
+    </channel>
+</rss>

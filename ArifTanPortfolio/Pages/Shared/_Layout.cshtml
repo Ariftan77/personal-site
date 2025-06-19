@@ -14,6 +14,14 @@
     <meta property="og:url" content="https://ariftan.dev" />
     <meta property="og:image" content="~/images/ariftan-logo.png" />
     
+        <!-- Blog-specific meta tags -->
+    @await RenderSectionAsync("Meta", required: false)
+    
+    <!-- Fonts for better typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
     <!-- Twitter Card -->
     @* <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="@ViewData["Title"] - Arif Tan" />
@@ -32,7 +40,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+       <!-- Blog styles -->
+    <link rel="stylesheet" href="~/css/blog.css" asp-append-version="true" />
     
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="Arif Tan - Tech Blog RSS Feed" href="/rss" />
     <!-- Favicon -->
     @* <link rel="icon" type="image/x-icon" href="~/images/ariftan-logo.png" /> *@
     <link rel="icon" type="image/png" href="~/images/ariftan-logo.png" />
@@ -195,6 +207,7 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/blog.js" asp-append-version="true"></script>
     
     <!-- Google Analytics (Replace with your tracking ID) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=GA_TRACKING_ID"></script>

@@ -103,17 +103,17 @@
                                 <div class="blog-meta mb-3">
                                     <small class="text-muted">
                                         <i class="fas fa-calendar me-1"></i>
-                                        @post.PublishedDate.ToString("MMMM dd, yyyy")
+                                        @post.PublishedDate!.Value.ToString("MMMM dd, yyyy")
                                     </small>
                                 </div>
                                 
-                                <h5 class="card-title blog-title">
-                                    <a href="/blog/@post.Slug" class="text-decoration-none text-dark">
+                                <h5 class="card-title mt-2">
+                                    <a href="/blog/@post.Slug" class="text-decoration-none">
                                         @post.Title
                                     </a>
                                 </h5>
                                 
-                                <p class="card-text text-muted blog-excerpt">@post.Summary</p>
+                                <p class="card-text text-muted blog-excerpt">@post.Excerpt</p>
                                 
                                 <!-- Tags -->
                                 @if (!string.IsNullOrEmpty(post.Tags))

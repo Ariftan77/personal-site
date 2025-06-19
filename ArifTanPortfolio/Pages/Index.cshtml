@@ -219,10 +219,14 @@
                             }
                             <div class="card-body">
                                 <small class="text-muted">
-                                    @post.PublishedDate.ToString("MMM dd, yyyy") • @post.ReadTimeMinutes min read
+                                    @post.PublishedDate!.Value.ToString("MMM dd, yyyy") • @post.ReadTimeMinutes min read
                                 </small>
-                                <h5 class="card-title mt-2">@post.Title</h5>
-                                <p class="card-text text-muted">@post.Summary</p>
+                                <h5 class="card-title mt-2">
+                                    <a href="/blog/@post.Slug" class="text-decoration-none">
+                                        @post.Title
+                                    </a>
+                                </h5>
+                                <p class="card-text text-muted">@post.Excerpt</p>
                                 @if (!string.IsNullOrEmpty(post.Tags))
                                 {
                                     <div class="mb-2">

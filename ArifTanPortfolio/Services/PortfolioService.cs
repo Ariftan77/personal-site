@@ -186,46 +186,46 @@ namespace ArifTanPortfolio.Services
             }
         }
 
-        public async Task<BlogPost?> GetBlogPostBySlugAsync(string slug)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(slug))
-                {
-                    _logger.LogWarning("Invalid slug parameter: {Slug}", slug);
-                    return null;
-                }
+        // public async Task<BlogPost?> GetBlogPostBySlugAsync(string slug)
+        // {
+        //     try
+        //     {
+        //         if (string.IsNullOrWhiteSpace(slug))
+        //         {
+        //             _logger.LogWarning("Invalid slug parameter: {Slug}", slug);
+        //             return null;
+        //         }
 
-                var normalizedSlug = slug.Trim().ToLowerInvariant();
-                var cacheKey = $"blog_post_{normalizedSlug}";
+        //         var normalizedSlug = slug.Trim().ToLowerInvariant();
+        //         var cacheKey = $"blog_post_{normalizedSlug}";
                 
-                if (_cache.TryGetValue(cacheKey, out BlogPost? cachedPost))
-                {
-                    return cachedPost;
-                }
+        //         if (_cache.TryGetValue(cacheKey, out BlogPost? cachedPost))
+        //         {
+        //             return cachedPost;
+        //         }
 
-                var post = await _context.BlogPosts
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(b => b.Slug.ToLower() == normalizedSlug && b.IsPublished);
+        //         var post = await _context.BlogPosts
+        //             .AsNoTracking()
+        //             .FirstOrDefaultAsync(b => b.Slug.ToLower() == normalizedSlug && b.IsPublished);
 
-                if (post != null)
-                {
-                    _cache.Set(cacheKey, post, _longCacheExpiry);
-                    _logger.LogInformation("Retrieved blog post by slug: {Slug}", slug);
-                }
-                else
-                {
-                    _logger.LogWarning("Blog post not found with slug: {Slug}", slug);
-                }
+        //         if (post != null)
+        //         {
+        //             _cache.Set(cacheKey, post, _longCacheExpiry);
+        //             _logger.LogInformation("Retrieved blog post by slug: {Slug}", slug);
+        //         }
+        //         else
+        //         {
+        //             _logger.LogWarning("Blog post not found with slug: {Slug}", slug);
+        //         }
 
-                return post;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving blog post with slug {Slug}", slug);
-                return null;
-            }
-        }
+        //         return post;
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         _logger.LogError(ex, "Error retrieving blog post with slug {Slug}", slug);
+        //         return null;
+        //     }
+        // }
 
         public async Task<List<Skill>> GetSkillsByCategoryAsync(string category)
         {
@@ -462,7 +462,208 @@ namespace ArifTanPortfolio.Services
                 return false;
             }
         }
+        // New blog-specific methods
+        public async Task<BlogPost?> GetBlogPostBySlugAsync(string slug)
+        {
+            return await _context.BlogPosts
+                .Where(bp => bp.Slug == slug && bp.IsPublished)
+                .FirstOrDefaultAsync();
+        }
 
+        public async Task<List<BlogPost>> GetRelatedBlogPostsAsync(int currentPostId, string? tags, int count = 3)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(tags))
+                {
+                    // If no tags, return recent posts excluding current
+                    return await _context.BlogPosts
+                        .Where(bp => bp.IsPublished && bp.Id != currentPostId)
+                        .OrderByDescending(bp => bp.PublishedDate)
+                        .Take(count)
+                        .ToListAsync();
+                }
+
+                var tagList = tags.Split(',')
+                    .Select(t => t.Trim().ToLower())
+                    .Where(t => !string.IsNullOrEmpty(t))
+                    .ToList();
+
+                if (!tagList.Any())
+                {
+                    // If no valid tags after processing, return recent posts
+                    return await _context.BlogPosts
+                        .Where(bp => bp.IsPublished && bp.Id != currentPostId)
+                        .OrderByDescending(bp => bp.PublishedDate)
+                        .Take(count)
+                        .ToListAsync();
+                }
+
+                // Get candidates from database first (limit to reasonable number for performance)
+                var candidatePosts = await _context.BlogPosts
+                    .Where(bp => bp.IsPublished && 
+                                bp.Id != currentPostId && 
+                                !string.IsNullOrEmpty(bp.Tags))
+                    .OrderByDescending(bp => bp.PublishedDate)
+                    .Take(50) // Limit candidates for performance
+                    .ToListAsync();
+
+                // Score posts by number of matching tags
+                var scoredPosts = candidatePosts
+                    .Select(post => new
+                    {
+                        Post = post,
+                        Score = post.Tags!.Split(',')
+                            .Select(t => t.Trim().ToLower())
+                            .Count(postTag => tagList.Contains(postTag))
+                    })
+                    .Where(sp => sp.Score > 0) // Only posts with at least one matching tag
+                    .OrderByDescending(sp => sp.Score) // Order by relevance
+                    .ThenByDescending(sp => sp.Post.PublishedDate) // Then by recency
+                    .Select(sp => sp.Post)
+                    .Take(count)
+                    .ToList();
+
+                // If we don't have enough related posts, fill with recent posts
+                if (scoredPosts.Count < count)
+                {
+                    var usedIds = scoredPosts.Select(p => p.Id).ToList();
+                    var additionalPosts = candidatePosts
+                        .Where(p => !usedIds.Contains(p.Id))
+                        .Take(count - scoredPosts.Count)
+                        .ToList();
+
+                    scoredPosts.AddRange(additionalPosts);
+                }
+
+                return scoredPosts;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting related blog posts for post {PostId}", currentPostId);
+                
+                // Fallback to recent posts
+                return await _context.BlogPosts
+                    .Where(bp => bp.IsPublished && bp.Id != currentPostId)
+                    .OrderByDescending(bp => bp.PublishedDate)
+                    .Take(count)
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<(BlogPost? Previous, BlogPost? Next)> GetAdjacentBlogPostsAsync(int currentPostId)
+        {
+            var currentPost = await _context.BlogPosts
+                .Where(bp => bp.Id == currentPostId && bp.IsPublished)
+                .FirstOrDefaultAsync();
+
+            if (currentPost?.PublishedDate == null)
+                return (null, null);
+
+            var previousPost = await _context.BlogPosts
+                .Where(bp => bp.IsPublished && bp.PublishedDate < currentPost.PublishedDate)
+                .OrderByDescending(bp => bp.PublishedDate)
+                .FirstOrDefaultAsync();
+
+            var nextPost = await _context.BlogPosts
+                .Where(bp => bp.IsPublished && bp.PublishedDate > currentPost.PublishedDate)
+                .OrderBy(bp => bp.PublishedDate)
+                .FirstOrDefaultAsync();
+
+            return (previousPost, nextPost);
+        }
+
+        public async Task IncrementBlogPostViewsAsync(int blogPostId)
+        {
+            try
+            {
+                var post = await _context.BlogPosts.FindAsync(blogPostId);
+                if (post != null)
+                {
+                    post.ViewCount++;
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error incrementing view count for blog post {BlogPostId}", blogPostId);
+                // Don't throw - view count increment shouldn't break page loading
+            }
+        }
+
+        public async Task<List<BlogPost>> SearchBlogPostsAsync(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return await GetPublishedBlogPostsAsync();
+
+            var lowerSearchTerm = searchTerm.ToLower();
+            
+            return await _context.BlogPosts
+                .Where(bp => bp.IsPublished && 
+                           (bp.Title.ToLower().Contains(lowerSearchTerm) ||
+                            bp.Content.ToLower().Contains(lowerSearchTerm) ||
+                            bp.Excerpt.ToLower().Contains(lowerSearchTerm) ||
+                            (bp.Tags != null && bp.Tags.ToLower().Contains(lowerSearchTerm))))
+                .OrderByDescending(bp => bp.PublishedDate)
+                .ToListAsync();
+        }
+
+        public async Task<List<BlogPost>> GetBlogPostsByTagAsync(string tag)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(tag))
+                    return new List<BlogPost>();
+
+                var normalizedTag = tag.Trim().ToLower();
+                
+                // Get candidate posts from database first
+                var candidatePosts = await _context.BlogPosts
+                    .Where(bp => bp.IsPublished && 
+                                !string.IsNullOrEmpty(bp.Tags) &&
+                                bp.Tags.ToLower().Contains(normalizedTag))
+                    .OrderByDescending(bp => bp.PublishedDate)
+                    .ToListAsync();
+
+                // Refine with exact tag matching on client side
+                var exactMatches = candidatePosts
+                    .Where(bp => bp.Tags!.Split(',')
+                        .Select(t => t.Trim().ToLower())
+                        .Contains(normalizedTag))
+                    .ToList();
+
+                return exactMatches;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting blog posts by tag: {Tag}", tag);
+                return new List<BlogPost>();
+            }
+        }
+
+        public async Task<List<string>> GetAllBlogTagsAsync()
+        {
+            var allTags = await _context.BlogPosts
+                .Where(bp => bp.IsPublished && !string.IsNullOrEmpty(bp.Tags))
+                .Select(bp => bp.Tags)
+                .ToListAsync();
+
+            return allTags
+                .SelectMany(tags => tags.Split(','))
+                .Select(tag => tag.Trim())
+                .Where(tag => !string.IsNullOrEmpty(tag))
+                .Distinct()
+                .OrderBy(tag => tag)
+                .ToList();
+        }
+
+        public async Task<List<BlogPost>> GetBlogPostsByCategoryAsync(string category)
+        {
+            return await _context.BlogPosts
+                .Where(bp => bp.IsPublished && bp.Category == category)
+                .OrderByDescending(bp => bp.PublishedDate)
+                .ToListAsync();
+        }
         // =======================================================================================
         // HELPER METHODS
         // =======================================================================================
