@@ -623,7 +623,7 @@ namespace ArifTanPortfolio.Services
         public async Task<List<BlogPost>> SearchBlogPostsAsync(string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
-                return await GetPublishedBlogPostsAsync();
+                return new List<BlogPost>();
 
             var lowerSearchTerm = searchTerm.ToLower();
             
