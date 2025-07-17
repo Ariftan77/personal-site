@@ -301,6 +301,35 @@ namespace ArifTanPortfolio.Services
             }
         }
 
+        public async Task<List<Skill>> GetHomePageSkillsAsync()
+        {
+            try
+            {
+                const string cacheKey = "homepage_skills";
+                if (_cache.TryGetValue(cacheKey, out List<Skill>? cachedSkills))
+                {
+                    return cachedSkills!;
+                }
+
+                var skills = await _context.Skills
+                    .Where(s => s.IsShowOnHomePage)
+                    .OrderByDescending(s => s.Proficiency)
+                    .ThenBy(s => s.SortOrder)
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                _cache.Set(cacheKey, skills, _longCacheExpiry);
+                _logger.LogInformation("Retrieved {Count} homepage skills", skills.Count);
+                
+                return skills;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving homepage skills");
+                return new List<Skill>();
+            }
+        }
+
         public async Task SaveContactMessageAsync(ContactMessage message)
         {
             try

@@ -3,6 +3,7 @@ using System;
 using ArifTanPortfolio.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArifTanPortfolio.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250717153726_UpdateSeedData")]
+    partial class UpdateSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
@@ -405,9 +408,6 @@ namespace ArifTanPortfolio.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsShowOnHomePage")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("IsVisible")
                         .HasColumnType("INTEGER");
 
@@ -436,7 +436,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 1,
                             Category = "Programming Languages",
                             Icon = "devicon-csharp-plain",
-                            IsShowOnHomePage = true,
                             IsVisible = true,
                             Name = "C#",
                             Proficiency = 9,
@@ -447,7 +446,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 2,
                             Category = "Programming Languages",
                             Icon = "devicon-javascript-plain",
-                            IsShowOnHomePage = true,
                             IsVisible = true,
                             Name = "JavaScript",
                             Proficiency = 8,
@@ -458,7 +456,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 3,
                             Category = "Programming Languages",
                             Icon = "devicon-python-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = true,
                             Name = "Python",
                             Proficiency = 8,
@@ -469,7 +466,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 4,
                             Category = "Programming Languages",
                             Icon = "devicon-dart-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = true,
                             Name = "Dart",
                             Proficiency = 6,
@@ -480,7 +476,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 5,
                             Category = "Frameworks",
                             Icon = "devicon-dot-net-plain",
-                            IsShowOnHomePage = true,
                             IsVisible = true,
                             Name = "ASP.NET Core",
                             Proficiency = 9,
@@ -491,7 +486,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 6,
                             Category = "Frameworks",
                             Icon = "devicon-nodejs-plain",
-                            IsShowOnHomePage = true,
                             IsVisible = true,
                             Name = "Node.js",
                             Proficiency = 8,
@@ -502,7 +496,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 7,
                             Category = "Frameworks",
                             Icon = "devicon-flutter-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = false,
                             Name = "Flutter",
                             Proficiency = 6,
@@ -513,7 +506,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 8,
                             Category = "Frameworks",
                             Icon = "devicon-bootstrap-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = false,
                             Name = "Bootstrap",
                             Proficiency = 8,
@@ -524,7 +516,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 9,
                             Category = "Frameworks",
                             Icon = "devicon-dot-net-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = true,
                             Name = "ASP.NET MVC",
                             Proficiency = 9,
@@ -535,7 +526,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 10,
                             Category = "Frameworks",
                             Icon = "devicon-dot-net-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = false,
                             Name = "Razor Pages",
                             Proficiency = 8,
@@ -547,7 +537,6 @@ namespace ArifTanPortfolio.Migrations
                             Category = "Frameworks",
                             Description = "Maintenance experience",
                             Icon = "devicon-react-original",
-                            IsShowOnHomePage = false,
                             IsVisible = false,
                             Name = "React",
                             Proficiency = 6,
@@ -558,7 +547,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 12,
                             Category = "Frameworks",
                             Icon = "devicon-dot-net-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = false,
                             Name = "SignalR",
                             Proficiency = 8,
@@ -569,7 +557,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 13,
                             Category = "Frameworks",
                             Icon = "devicon-jquery-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = false,
                             Name = "jQuery",
                             Proficiency = 8,
@@ -580,7 +567,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 14,
                             Category = "Frameworks",
                             Icon = "devicon-html5-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = false,
                             Name = "HTML/CSS",
                             Proficiency = 8,
@@ -591,7 +577,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 15,
                             Category = "Frameworks",
                             Icon = "devicon-javascript-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = true,
                             Name = "AJAX",
                             Proficiency = 8,
@@ -602,7 +587,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 16,
                             Category = "Cloud & DevOps",
                             Icon = "devicon-git-plain",
-                            IsShowOnHomePage = true,
                             IsVisible = true,
                             Name = "Git",
                             Proficiency = 9,
@@ -613,7 +597,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 17,
                             Category = "Cloud & DevOps",
                             Icon = "devicon-amazonwebservices-plain",
-                            IsShowOnHomePage = true,
                             IsVisible = true,
                             Name = "AWS (S3, RDS)",
                             Proficiency = 8,
@@ -624,7 +607,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 18,
                             Category = "Cloud & DevOps",
                             Icon = "devicon-amazonwebservices-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = true,
                             Name = "AWS EC2 & Lightsail",
                             Proficiency = 8,
@@ -635,7 +617,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 19,
                             Category = "Cloud & DevOps",
                             Icon = "devicon-docker-plain",
-                            IsShowOnHomePage = true,
                             IsVisible = true,
                             Name = "Docker",
                             Proficiency = 7,
@@ -646,7 +627,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 20,
                             Category = "Cloud & DevOps",
                             Icon = "fas fa-bolt",
-                            IsShowOnHomePage = false,
                             IsVisible = false,
                             Name = "Power Automate",
                             Proficiency = 8,
@@ -657,7 +637,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 21,
                             Category = "Cloud & DevOps",
                             Icon = "devicon-azure-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = false,
                             Name = "Azure",
                             Proficiency = 7,
@@ -668,7 +647,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 22,
                             Category = "Cloud & DevOps",
                             Icon = "devicon-azure-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = false,
                             Name = "Azure DevOps",
                             Proficiency = 7,
@@ -679,7 +657,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 23,
                             Category = "Databases",
                             Icon = "devicon-microsoftsqlserver-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = true,
                             Name = "SQL Server",
                             Proficiency = 9,
@@ -690,7 +667,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 24,
                             Category = "Databases",
                             Icon = "devicon-postgresql-plain",
-                            IsShowOnHomePage = true,
                             IsVisible = true,
                             Name = "PostgreSQL",
                             Proficiency = 9,
@@ -701,7 +677,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 25,
                             Category = "Databases",
                             Icon = "devicon-dot-net-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = true,
                             Name = "Entity Framework Core",
                             Proficiency = 9,
@@ -712,7 +687,6 @@ namespace ArifTanPortfolio.Migrations
                             Id = 26,
                             Category = "Databases",
                             Icon = "devicon-sqlite-plain",
-                            IsShowOnHomePage = false,
                             IsVisible = true,
                             Name = "SQLite",
                             Proficiency = 9,

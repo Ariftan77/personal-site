@@ -28,7 +28,7 @@ namespace ArifTanPortfolio.Pages
             {
                 // Load data for homepage
                 FeaturedProjects = await _portfolioService.GetFeaturedProjectsAsync();
-                TopSkills = await _portfolioService.GetTopSkillsAsync(8);
+                TopSkills = await _portfolioService.GetHomePageSkillsAsync();
                 RecentBlogPosts = await _portfolioService.GetRecentBlogPostsAsync(3);
             }
             catch (Exception ex)

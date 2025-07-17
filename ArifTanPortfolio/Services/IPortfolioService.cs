@@ -12,6 +12,7 @@ namespace ArifTanPortfolio.Services
         Task<BlogPost?> GetBlogPostBySlugAsync(string slug);
         Task<List<Skill>> GetSkillsByCategoryAsync(string category);
         Task<List<Skill>> GetTopSkillsAsync(int count = 8);
+        Task<List<Skill>> GetHomePageSkillsAsync();
         Task SaveContactMessageAsync(ContactMessage message);
 
         // Add these NEW methods for enhanced functionality

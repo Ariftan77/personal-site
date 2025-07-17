@@ -25,6 +25,7 @@ namespace ArifTanPortfolio.Models
 
         public int SortOrder { get; set; }
         public bool IsVisible { get; set; } = true;
+        public bool IsShowOnHomePage { get; set; } = false;
         public string ProficientcyLevel
         {
             get
