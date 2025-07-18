@@ -1,48 +1,30 @@
-# Use the official .NET 8 SDK image for building
+# Simplified Dockerfile without EF tools (recommended approach)
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /app
+WORKDIR /src
 
-# Copy project files
-COPY ArifTanPortfolio/*.csproj ./ArifTanPortfolio/
-COPY ArifTanPortfolio.Tests/*.csproj ./ArifTanPortfolio.Tests/
+# Copy csproj and restore dependencies
+COPY ["ArifTanPortfolio.csproj", "./"]
+RUN dotnet restore "ArifTanPortfolio.csproj"
 
-# Restore dependencies
-RUN dotnet restore ArifTanPortfolio/ArifTanPortfolio.csproj
-
-# Copy source code
+# Copy everything else and build
 COPY . .
+RUN dotnet build "ArifTanPortfolio.csproj" -c Release -o /app/build
 
-# Build the application
-WORKDIR /app/ArifTanPortfolio
-RUN dotnet build -c Release -o /app/build
+# Publish stage
+FROM build AS publish
+RUN dotnet publish "ArifTanPortfolio.csproj" -c Release -o /app/publish
 
-# Publish the application
-RUN dotnet publish -c Release -o /app/publish --no-restore
-
-# Use the official ASP.NET Core runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+# Final runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
-# Install Entity Framework Core tools for migrations
-RUN dotnet tool install --global dotnet-ef
-ENV PATH="${PATH}:/root/.dotnet/tools"
-
-# Copy published app from build stage
-COPY --from=build /app/publish .
-
-# Create directory for SQLite database
-RUN mkdir -p /app/data
-
-# Expose port (Railway uses PORT environment variable)
-EXPOSE 8080
+# Copy published app
+COPY --from=publish /app/publish .
 
 # Set environment variables
 ENV ASPNETCORE_ENVIRONMENT=Production
-ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_URLS=http://+:80
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:8080/health || exit 1
-
-# Run database migrations and start the application
-ENTRYPOINT ["sh", "-c", "dotnet ef database update --no-build && dotnet ArifTanPortfolio.dll"]
+ENTRYPOINT ["dotnet", "ArifTanPortfolio.dll"]
