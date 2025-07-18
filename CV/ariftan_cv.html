@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arif Tan - Software Engineer CV</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            line-height: 1.5;
+            color: #2d3748;
+            background: white;
+            font-size: 11px;
+        }
+        
+        .cv-container {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 15mm;
+            background: white;
+            min-height: 297mm;
+        }
+        
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4299e1;
+        }
+        
+        .name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2b6cb0;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+        
+        .title {
+            font-size: 16px;
+            color: #4a5568;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 10px;
+            color: #718096;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* Section Styling */
+        .section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2b6cb0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        /* Professional Summary */
+        .summary {
+            font-size: 11px;
+            text-align: justify;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .key-strengths {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .strength-item {
+            font-size: 10px;
+            padding-left: 12px;
+            position: relative;
+        }
+        
+        .strength-item::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #4299e1;
+            font-weight: bold;
+        }
+        
+        /* Technical Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .skill-category {
+            background: #f7fafc;
+            padding: 12px;
+            border-radius: 5px;
+            border-left: 3px solid #4299e1;
+        }
+        
+        .skill-category-title {
+            font-weight: 600;
+            font-size: 11px;
+            color: #2b6cb0;
+            margin-bottom: 6px;
+        }
+        
+        .skill-list {
+            font-size: 10px;
+            line-height: 1.4;
+        }
+        
+        /* Experience Section */
+        .experience-item {
+            margin-bottom: 20px;
+            border-left: 2px solid #e2e8f0;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .experience-item::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: #4299e1;
+            border-radius: 50%;
+            position: absolute;
+            left: -5px;
+            top: 5px;
+        }
+        
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .job-title {
+            font-weight: 600;
+            font-size: 12px;
+            color: #2d3748;
+        }
+        
+        .job-period {
+            font-size: 10px;
+            color: #718096;
+            font-weight: 500;
+        }
+        
+        .company {
+            font-size: 11px;
+            color: #4a5568;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+        
+        .job-description {
+            font-size: 10px;
+            margin-bottom: 8px;
+            text-align: justify;
+        }
+        
+        .achievements {
+            margin-bottom: 8px;
+        }
+        
+        .achievements-title {
+            font-weight: 600;
+            font-size: 10px;
+            margin-bottom: 4px;
+        }
+        
+        .achievements ul {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .achievements li {
+            font-size: 10px;
+            margin-bottom: 3px;
+            padding-left: 12px;
+            position: relative;
+        }
+        
+        .achievements li::before {
+            content: "•";
+            color: #4299e1;
+            position: absolute;
+            left: 0;
+        }
+        
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 6px;
+        }
+        
+        .tech-tag {
+            background: #edf2f7;
+            color: #4a5568;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: 500;
+        }
+        
+        /* Projects Section */
+        .project-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid #4299e1;
+        }
+        
+        .project-title {
+            font-weight: 600;
+            font-size: 11px;
+            color: #2b6cb0;
+            margin-bottom: 3px;
+        }
+        
+        .project-period {
+            font-size: 9px;
+            color: #718096;
+            margin-bottom: 5px;
+        }
+        
+        .project-description {
+            font-size: 10px;
+            margin-bottom: 5px;
+        }
+        
+        /* Education and Two-Column Sections */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .education-item {
+            margin-bottom: 12px;
+        }
+        
+        .degree {
+            font-weight: 600;
+            font-size: 11px;
+            color: #2d3748;
+        }
+        
+        .institution {
+            font-size: 10px;
+            color: #4a5568;
+            margin-bottom: 2px;
+        }
+        
+        .education-details {
+            font-size: 9px;
+            color: #718096;
+        }
+        
+        /* Certifications */
+        .cert-item {
+            margin-bottom: 8px;
+            font-size: 10px;
+        }
+        
+        .cert-name {
+            font-weight: 500;
+            color: #2d3748;
+        }
+        
+        .cert-issuer {
+            color: #718096;
+            font-size: 9px;
+        }
+        
+        /* Languages and Additional Info */
+        .language-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .language-item {
+            text-align: center;
+            padding: 8px;
+            background: #f7fafc;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+        
+        .language-name {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .language-level {
+            color: #718096;
+            font-size: 9px;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body { 
+                font-size: 10px;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+            .cv-container { 
+                margin: 0;
+                padding: 10mm;
+                box-shadow: none;
+            }
+            .section { margin-bottom: 15px; }
+            .experience-item { margin-bottom: 15px; }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cv-container { padding: 20px; }
+            .contact-info { flex-direction: column; gap: 8px; }
+            .skills-grid, .two-column { grid-template-columns: 1fr; }
+            .job-header { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cv-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="name">ARIF TAN</h1>
+            <p class="title">Software Engineer & Technical Lead</p>
+            <div class="contact-info">
+                <div class="contact-item">📧 ariftan7788@gmail.com</div>
+                <div class="contact-item">📱 +62 812 7772 1866</div>
+                <div class="contact-item">📍 Batam, Indonesia</div>
+                <div class="contact-item">🔗 linkedin.com/in/ariftan2212</div>
+                <div class="contact-item">💻 github.com/Ariftan77</div>
+                <div class="contact-item">🌐 ariftan.me</div>
+            </div>
+        </header>
+
+        <!-- Professional Summary -->
+        <section class="section">
+            <h2 class="section-title">Professional Summary</h2>
+            <p class="summary">
+                Experienced Software Engineer with 6+ years building scalable enterprise solutions across manufacturing, property management, and logistics industries. Proven technical leader with expertise in ASP.NET Core, cloud platforms (AWS), and full-stack development. Currently seeking opportunities with leading technology companies to contribute to cutting-edge projects at global scale.
+            </p>
+            <div class="key-strengths">
+                <div class="strength-item">Technical leadership of cross-functional teams</div>
+                <div class="strength-item">Enterprise-scale system architecture</div>
+                <div class="strength-item">Full-stack development expertise</div>
+                <div class="strength-item">Cloud infrastructure management (AWS)</div>
+                <div class="strength-item">Strong business domain knowledge</div>
+                <div class="strength-item">Agile development methodologies</div>
+            </div>
+        </section>
+
+        <!-- Technical Skills -->
+        <section class="section">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <div class="skill-category-title">Programming Languages</div>
+                    <div class="skill-list">C# (Expert), JavaScript (Advanced), Python (Advanced), Dart (Intermediate)</div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-category-title">Web Frameworks</div>
+                    <div class="skill-list">ASP.NET Core, ASP.NET MVC, Node.js, Razor Pages, SignalR, Flutter</div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-category-title">Databases & ORM</div>
+                    <div class="skill-list">SQL Server, PostgreSQL, Entity Framework Core, SQLite</div>
+                </div>
+                <div class="skill-category">
+                    <div class="skill-category-title">Cloud & DevOps</div>
+                    <div class="skill-list">AWS (S3, EC2, Lightsail), Power Automate, Docker, Git, Azure DevOps</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Professional Experience -->
+        <section class="section">
+            <h2 class="section-title">Professional Experience</h2>
+            
+            <div class="experience-item">
+                <div class="job-header">
+                    <div class="job-title">Software Engineer & Technical Lead</div>
+                    <div class="job-period">Mar 2023 - Present</div>
+                </div>
+                <div class="company">Hup Soon Cheong Services Pte Ltd | Remote</div>
+                <p class="job-description">
+                    Leading technical development and maintenance of enterprise applications across multiple client projects. Currently spearheading comprehensive Warehouse Management System development while managing legacy systems and API integrations.
+                </p>
+                <div class="achievements">
+                    <div class="achievements-title">Key Achievements:</div>
+                    <ul>
+                        <li>Technical lead for Givaudan web application & API project - delivered MVP ahead of schedule</li>
+                        <li>Leading WMS development team of 3 engineers with successful sprint deliveries</li>
+                        <li>Architected scalable solutions serving critical manufacturing operations with 99%+ uptime</li>
+                        <li>Successfully onboarded high-value clients through reliable project delivery</li>
+                    </ul>
+                </div>
+                <div class="tech-tags">
+                    <span class="tech-tag">ASP.NET Core</span>
+                    <span class="tech-tag">Node.js</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">AWS</span>
+                    <span class="tech-tag">Power Automate</span>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="job-header">
+                    <div class="job-title">Professional Development Period</div>
+                    <div class="job-period">Oct 2022 - Feb 2023</div>
+                </div>
+                <div class="company">Independent Learning & Skill Enhancement</div>
+                <p class="job-description">
+                    Strategic career break focused on expanding technical expertise and preparing for senior engineering roles in global technology companies.
+                </p>
+                <div class="achievements">
+                    <div class="achievements-title">Key Achievements:</div>
+                    <ul>
+                        <li>Completed comprehensive Flutter & Dart certification (Udemy 2022)</li>
+                        <li>Enhanced ASP.NET Core Web API skills through specialized certification (Udemy 2023)</li>
+                        <li>Developed Python expertise through comprehensive developer certification (Udemy 2023)</li>
+                        <li>Studied system design patterns and scalable architecture principles</li>
+                        <li>Prepared for technical leadership roles through advanced coursework</li>
+                    </ul>
+                </div>
+                <div class="tech-tags">
+                    <span class="tech-tag">Flutter</span>
+                    <span class="tech-tag">Dart</span>
+                    <span class="tech-tag">ASP.NET Core API</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">System Design</span>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="job-header">
+                    <div class="job-title">Software Engineer</div>
+                    <div class="job-period">Oct 2020 - Sep 2022</div>
+                </div>
+                <div class="company">Anacle Systems Limited | Remote</div>
+                <p class="job-description">
+                    Specialized in customizing enterprise building management systems for diverse clients across Southeast Asia. Led development of utility management modules handling complex billing systems.
+                </p>
+                <div class="achievements">
+                    <div class="achievements-title">Key Achievements:</div>
+                    <ul>
+                        <li>Successfully delivered utility management solutions for 5+ enterprise clients</li>
+                        <li>Developed Windows workflows and automated billing processes reducing manual work by 60%</li>
+                        <li>Created comprehensive API integrations for third-party system connectivity</li>
+                        <li>Built data migration utilities ensuring smooth client onboarding</li>
+                    </ul>
+                </div>
+                <div class="tech-tags">
+                    <span class="tech-tag">ASP.NET Web Forms</span>
+                    <span class="tech-tag">Windows Workflow</span>
+                    <span class="tech-tag">SQL Server</span>
+                    <span class="tech-tag">API Development</span>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="job-header">
+                    <div class="job-title">Software Developer</div>
+                    <div class="job-period">Jul 2018 - Sep 2020</div>
+                </div>
+                <div class="company">PT. Sat Nusapersada Tbk | Batam, Indonesia</div>
+                <p class="job-description">
+                    Developed comprehensive warehouse and shipment management systems for electronics manufacturing operations. Built desktop applications and web services handling production workflows.
+                </p>
+                <div class="achievements">
+                    <div class="achievements-title">Key Achievements:</div>
+                    <ul>
+                        <li>Designed and implemented complete WMS from scratch for electronics manufacturing</li>
+                        <li>Built desktop applications using C# Windows Forms with Entity Framework</li>
+                        <li>Created automated reporting systems improving efficiency by 40%</li>
+                        <li>Achieved 95% user satisfaction through technical support and training</li>
+                    </ul>
+                </div>
+                <div class="tech-tags">
+                    <span class="tech-tag">C# Windows Forms</span>
+                    <span class="tech-tag">Entity Framework</span>
+                    <span class="tech-tag">SQL Server</span>
+                    <span class="tech-tag">Manufacturing Systems</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Projects -->
+        <section class="section">
+            <h2 class="section-title">Key Projects</h2>
+            
+            <div class="project-item">
+                <div class="project-title">Enterprise Warehouse Management System</div>
+                <div class="project-period">Mar 2023 - Present</div>
+                <p class="project-description">
+                    Led development of comprehensive WMS handling inventory management, order processing, and real-time analytics for logistics operations across multiple warehouse locations.
+                </p>
+                <div class="tech-tags">
+                    <span class="tech-tag">ASP.NET Core</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">SignalR</span>
+                    <span class="tech-tag">AWS</span>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <div class="project-title">Givaudan Manufacturing Web Application</div>
+                <div class="project-period">2023</div>
+                <p class="project-description">
+                    Technical lead for web application and API development serving critical manufacturing operations. Delivered MVP ahead of schedule.
+                </p>
+                <div class="tech-tags">
+                    <span class="tech-tag">ASP.NET Core</span>
+                    <span class="tech-tag">SQL Server</span>
+                    <span class="tech-tag">Web APIs</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education and Certifications -->
+        <section class="section">
+            <h2 class="section-title">Education & Certifications</h2>
+            <div class="two-column">
+                <div>
+                    <h3 style="font-size: 12px; color: #2b6cb0; margin-bottom: 10px;">Education</h3>
+                    <div class="education-item">
+                        <div class="degree">Bachelor of Information System</div>
+                        <div class="institution">Universitas Internasional Batam (UIB)</div>
+                        <div class="education-details">2016 - 2020 | GPA: 3.67/4.0</div>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="font-size: 12px; color: #2b6cb0; margin-bottom: 10px;">Certifications</h3>
+                    <div class="cert-item">
+                        <div class="cert-name">ASP.NET Core Web API Bootcamp - Build REST APIs</div>
+                        <div class="cert-issuer">Udemy | 2023 (11 hours)</div>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-name">The Complete Python Developer</div>
+                        <div class="cert-issuer">Udemy | 2023 (31 hours)</div>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-name">Flutter & Dart - The Complete Guide</div>
+                        <div class="cert-issuer">Udemy | 2022 (42.5 hours)</div>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-name">MTA: Software Development Fundamentals</div>
+                        <div class="cert-issuer">Microsoft | 2017</div>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-name">MTA: Database Fundamentals</div>
+                        <div class="cert-issuer">Microsoft | 2018</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Languages and Additional Info -->
+        <section class="section">
+            <div class="two-column">
+                <div>
+                    <h3 style="font-size: 12px; color: #2b6cb0; margin-bottom: 10px;">Languages</h3>
+                    <div class="language-grid">
+                        <div class="language-item">
+                            <div class="language-name">English</div>
+                            <div class="language-level">Fluent</div>
+                        </div>
+                        <div class="language-item">
+                            <div class="language-name">Indonesian</div>
+                            <div class="language-level">Native</div>
+                        </div>
+                        <div class="language-item">
+                            <div class="language-name">Mandarin</div>
+                            <div class="language-level">Conversational</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="font-size: 12px; color: #2b6cb0; margin-bottom: 10px;">Additional Information</h3>
+                    <div style="font-size: 10px;">
+                        <div class="strength-item">Available for immediate start</div>
+                        <div class="strength-item">Open to relocation opportunities</div>
+                        <div class="strength-item">Remote work experience</div>
+                        <div class="strength-item">LeetCode regular practice</div>
+                        <div class="strength-item">Recent certifications in ASP.NET Core & Python</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

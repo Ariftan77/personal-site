@@ -23,7 +23,13 @@ Thumbs.db
 # ASP.NET Core secrets (if used)
 **/appsettings.Development.json
 **/appsettings.Local.json
+**/appsettings.Production.json
 secrets.json
+*.pfx
+*.p12
+*.key
+*.pem
+*.crt
 
 # dotnet watch temp
 **/tmp/
@@ -51,3 +57,9 @@ wwwroot/lib/
 # JetBrains Rider + VS Code settings
 *.sln.iml
 *.DotSettings.user
+
+# Ignore everything in CV folder
+CV/*
+
+# But don't ignore ariftan_cv.html
+!CV/ariftan_cv.html
