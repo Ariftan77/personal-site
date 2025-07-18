@@ -1,30 +1,39 @@
-# Simplified Dockerfile without EF tools (recommended approach)
+# Railway-optimized Dockerfile for .NET 8.0 ASP.NET Core
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy csproj and restore dependencies
-COPY ["ArifTanPortfolio.csproj", "./"]
-RUN dotnet restore "ArifTanPortfolio.csproj"
+# Copy solution file if it exists
+COPY *.sln .
 
-# Copy everything else and build
+# Copy project files
+COPY ["ArifTanPortfolio/ArifTanPortfolio.csproj", "ArifTanPortfolio/"]
+
+# Restore dependencies
+RUN dotnet restore "ArifTanPortfolio/ArifTanPortfolio.csproj"
+
+# Copy everything else
 COPY . .
+
+# Build the project
+WORKDIR "/src/ArifTanPortfolio"
 RUN dotnet build "ArifTanPortfolio.csproj" -c Release -o /app/build
 
-# Publish stage
+# Publish the project
 FROM build AS publish
 RUN dotnet publish "ArifTanPortfolio.csproj" -c Release -o /app/publish
 
-# Final runtime stage
+# Final stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 
-# Copy published app
+# Copy published files
 COPY --from=publish /app/publish .
 
-# Set environment variables
+# Railway-specific: Configure for Railway's PORT environment variable
+ENV ASPNETCORE_URLS=http://0.0.0.0:$PORT
 ENV ASPNETCORE_ENVIRONMENT=Production
-ENV ASPNETCORE_URLS=http://+:80
+
+# Expose port (Railway will inject the actual port)
+EXPOSE $PORT
 
 ENTRYPOINT ["dotnet", "ArifTanPortfolio.dll"]
