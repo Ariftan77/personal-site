@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ArifTanPortfolio.Data;
 using ArifTanPortfolio.Services;
+using ArifTanPortfolio.Middleware;
 using Markdig;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,6 +62,13 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Add security headers middleware
+app.UseMiddleware<SecurityHeadersMiddleware>();
+
+// Add rate limiting middleware
+app.UseMiddleware<RateLimitingMiddleware>();
+
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -89,3 +97,6 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
+// Make Program class accessible to tests
+public partial class Program { }

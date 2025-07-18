@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ArifTanPortfolio.Pages
 {
-    [ValidateAntiForgeryToken]
     public class ContactModel : PageModel
     {
         private readonly IEmailService _emailService;

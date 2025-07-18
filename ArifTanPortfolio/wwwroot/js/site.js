@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initImageLazyLoading();
     initTheme();
     initThemeToggle();
+    initRateLimitHandler();
 
     // Page-specific initializations
     initPortfolioFilter();
@@ -796,5 +797,29 @@ function initEnhancedAnimations() {
         
         observer.observe(element);
     });
+}
+
+// Rate limit handler for global 429 responses
+function initRateLimitHandler() {
+    // Override fetch to handle rate limiting
+    const originalFetch = window.fetch;
+    window.fetch = function(...args) {
+        return originalFetch.apply(this, args)
+            .then(response => {
+                if (response.status === 429) {
+                    // Try to get the error message from the response
+                    response.clone().json().then(data => {
+                        if (data.message) {
+                            showAlert('warning', data.message);
+                        } else {
+                            showAlert('warning', 'Rate limit exceeded. Please wait a moment before trying again.');
+                        }
+                    }).catch(() => {
+                        showAlert('warning', 'Rate limit exceeded. Please wait a moment before trying again.');
+                    });
+                }
+                return response;
+            });
+    };
 }
 
