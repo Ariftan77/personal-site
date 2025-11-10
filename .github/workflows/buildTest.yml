@@ -19,10 +19,24 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 8.0.x   
+
     - name: Restore dependencies
       run: dotnet restore
+
     - name: Build
       run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+
+    - name: Test with Coverage
+      run: |
+        dotnet test --no-build \
+          /p:CollectCoverage=true \
+          /p:CoverletOutputFormat=opencover \
+          /p:Threshold=80 \
+          /p:ThresholdType=line
+
+    - name: Upload Coverage to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        files: ./coverage.opencover.xml
+        fail_ci_if_error: true

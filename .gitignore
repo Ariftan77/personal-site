@@ -8,6 +8,7 @@ out/
 *.suo
 *.userosscache
 *.sln.docstates
+.vs/
 
 # VS Code settings
 .vscode/
@@ -63,3 +64,6 @@ CV/*
 
 # But don't ignore ariftan_cv.html
 !CV/ariftan_cv.html
+
+# CI learning documentation
+docs/ci/
