@@ -1,6 +1,8 @@
 using FluentAssertions;
 using ArifTanPortfolio.Models;
+using ArifTanPortfolio.Models.ViewModels;
 using ArifTanPortfolio.Tests.TestHelpers;
+using System.ComponentModel.DataAnnotations;
 
 namespace ArifTanPortfolio.Tests.UnitTests
 {
@@ -248,5 +250,242 @@ namespace ArifTanPortfolio.Tests.UnitTests
             contactMessage.Email.Should().NotBeNullOrWhiteSpace();
             contactMessage.Message.Should().NotBeNullOrWhiteSpace();
         }
+
+        #region ViewModel Tests
+
+        [Fact]
+        public void ContactViewModel_DefaultValues_ShouldBeSetCorrectly()
+        {
+            // Arrange & Act
+            var viewModel = new ContactViewModel();
+
+            // Assert
+            viewModel.Name.Should().BeEmpty();
+            viewModel.Email.Should().BeEmpty();
+            viewModel.Message.Should().BeEmpty();
+            viewModel.Subject.Should().BeNull();
+            viewModel.Company.Should().BeNull();
+            viewModel.Phone.Should().BeNull();
+        }
+
+        [Fact]
+        public void ContactViewModel_ValidData_ShouldPassValidation()
+        {
+            // Arrange
+            var viewModel = new ContactViewModel
+            {
+                Name = "John Doe",
+                Email = "john.doe@example.com",
+                Message = "This is a test message with enough characters"
+            };
+
+            // Act
+            var validationResults = ValidateModel(viewModel);
+
+            // Assert
+            validationResults.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void ContactViewModel_RequiredFields_ShouldFailValidationWhenEmpty()
+        {
+            // Arrange
+            var viewModel = new ContactViewModel();
+
+            // Act
+            var validationResults = ValidateModel(viewModel);
+
+            // Assert
+            validationResults.Should().HaveCount(3);
+            validationResults.Should().Contain(v => v.MemberNames.Contains("Name"));
+            validationResults.Should().Contain(v => v.MemberNames.Contains("Email"));
+            validationResults.Should().Contain(v => v.MemberNames.Contains("Message"));
+        }
+
+        [Fact]
+        public void ContactViewModel_InvalidEmail_ShouldFailValidation()
+        {
+            // Arrange
+            var viewModel = new ContactViewModel
+            {
+                Name = "John Doe",
+                Email = "invalid-email",
+                Message = "This is a test message with enough characters"
+            };
+
+            // Act
+            var validationResults = ValidateModel(viewModel);
+
+            // Assert
+            validationResults.Should().ContainSingle();
+            validationResults.First().MemberNames.Should().Contain("Email");
+            validationResults.First().ErrorMessage.Should().Contain("valid email");
+        }
+
+        [Fact]
+        public void ContactViewModel_MessageTooShort_ShouldFailValidation()
+        {
+            // Arrange
+            var viewModel = new ContactViewModel
+            {
+                Name = "John Doe",
+                Email = "john.doe@example.com",
+                Message = "Short"
+            };
+
+            // Act
+            var validationResults = ValidateModel(viewModel);
+
+            // Assert
+            validationResults.Should().ContainSingle();
+            validationResults.First().MemberNames.Should().Contain("Message");
+            validationResults.First().ErrorMessage.Should().Contain("between 10 and 2000");
+        }
+
+        [Fact]
+        public void ContactViewModel_MessageTooLong_ShouldFailValidation()
+        {
+            // Arrange
+            var viewModel = new ContactViewModel
+            {
+                Name = "John Doe",
+                Email = "john.doe@example.com",
+                Message = new string('a', 2001) // 2001 characters
+            };
+
+            // Act
+            var validationResults = ValidateModel(viewModel);
+
+            // Assert
+            validationResults.Should().ContainSingle();
+            validationResults.First().MemberNames.Should().Contain("Message");
+        }
+
+        [Fact]
+        public void ContactViewModel_NameTooLong_ShouldFailValidation()
+        {
+            // Arrange
+            var viewModel = new ContactViewModel
+            {
+                Name = new string('a', 101), // 101 characters
+                Email = "john.doe@example.com",
+                Message = "This is a test message with enough characters"
+            };
+
+            // Act
+            var validationResults = ValidateModel(viewModel);
+
+            // Assert
+            validationResults.Should().ContainSingle();
+            validationResults.First().MemberNames.Should().Contain("Name");
+        }
+
+        [Fact]
+        public void ContactViewModel_OptionalFields_ShouldAcceptNullValues()
+        {
+            // Arrange
+            var viewModel = new ContactViewModel
+            {
+                Name = "John Doe",
+                Email = "john.doe@example.com",
+                Message = "This is a test message with enough characters",
+                Subject = null,
+                Company = null,
+                Phone = null
+            };
+
+            // Act
+            var validationResults = ValidateModel(viewModel);
+
+            // Assert
+            validationResults.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void ContactViewModel_ValidPhoneNumber_ShouldPassValidation()
+        {
+            // Arrange
+            var viewModel = new ContactViewModel
+            {
+                Name = "John Doe",
+                Email = "john.doe@example.com",
+                Message = "This is a test message with enough characters",
+                Phone = "+1234567890"
+            };
+
+            // Act
+            var validationResults = ValidateModel(viewModel);
+
+            // Assert
+            validationResults.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void HomeViewModel_DefaultValues_ShouldBeInitialized()
+        {
+            // Arrange & Act
+            var viewModel = new HomeViewModel();
+
+            // Assert
+            viewModel.FeaturedProjects.Should().NotBeNull();
+            viewModel.FeaturedProjects.Should().BeEmpty();
+            viewModel.TopSkills.Should().NotBeNull();
+            viewModel.TopSkills.Should().BeEmpty();
+            viewModel.RecentBlogPosts.Should().NotBeNull();
+            viewModel.RecentBlogPosts.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void HomeViewModel_WithData_ShouldStoreDataCorrectly()
+        {
+            // Arrange
+            var projects = TestDataBuilder.CreateTestProjects();
+            var skills = TestDataBuilder.CreateTestSkills();
+            var blogPosts = TestDataBuilder.CreateTestBlogPosts();
+
+            // Act
+            var viewModel = new HomeViewModel
+            {
+                FeaturedProjects = projects,
+                TopSkills = skills,
+                RecentBlogPosts = blogPosts
+            };
+
+            // Assert
+            viewModel.FeaturedProjects.Should().BeEquivalentTo(projects);
+            viewModel.TopSkills.Should().BeEquivalentTo(skills);
+            viewModel.RecentBlogPosts.Should().BeEquivalentTo(blogPosts);
+        }
+
+        [Fact]
+        public void HomeViewModel_EmptyCollections_ShouldHandleGracefully()
+        {
+            // Arrange & Act
+            var viewModel = new HomeViewModel
+            {
+                FeaturedProjects = new List<Project>(),
+                TopSkills = new List<Skill>(),
+                RecentBlogPosts = new List<BlogPost>()
+            };
+
+            // Assert
+            viewModel.FeaturedProjects.Should().BeEmpty();
+            viewModel.TopSkills.Should().BeEmpty();
+            viewModel.RecentBlogPosts.Should().BeEmpty();
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        private static List<ValidationResult> ValidateModel(object model)
+        {
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(model, null, null);
+            Validator.TryValidateObject(model, validationContext, validationResults, true);
+            return validationResults;
+        }
+
+        #endregion
     }
 }

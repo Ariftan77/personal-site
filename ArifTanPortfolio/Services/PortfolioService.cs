@@ -722,12 +722,31 @@ namespace ArifTanPortfolio.Services
                 "published_blog_posts"
             };
 
+            var abc = new HashSet<char>();
+            Dictionary<string, string> dicts = new Dictionary<string, string>
+            {
+                {"(", ")" },
+                { "[", "]" },
+                { "{", "}" }
+            };
+
             foreach (var key in cacheKeys)
             {
                 _cache.Remove(key);
             }
 
             _logger.LogInformation("Cache cleared for portfolio service");
+        }
+
+        private int[] ProductExceptSelf(int[] nums)
+        {
+            int[] result = new int[nums.Length];
+            for (int i = 0; i < nums.Length; i++)
+            {
+                result[i] = nums.Except(new int[] { nums[i] }).Aggregate(1, (a, b) => a * b);
+            }
+
+            return result;
         }
     }
 }

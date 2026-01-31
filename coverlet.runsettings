@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat code coverage">
+        <Configuration>
+          <Format>cobertura</Format>
+          <Exclude>
+            <!-- Exclude Program.cs (startup code) -->
+            [ArifTanPortfolio]ArifTanPortfolio.Program
+
+            <!-- Exclude Migrations (EF Core generated) -->
+            [ArifTanPortfolio]ArifTanPortfolio.Migrations.*
+
+            <!-- Exclude auto-generated files -->
+            [*]*.Designer
+            [*]*.designer.cs
+            [*]*AssemblyInfo
+
+            <!-- Exclude Pages (Razor Pages are hard to unit test) -->
+            [ArifTanPortfolio]ArifTanPortfolio.Pages.*
+          </Exclude>
+
+          <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+
+          <ExcludeByFile>
+            <!-- Exclude specific files -->
+            **/Program.cs
+            **/Migrations/**/*.cs
+            **/*.Designer.cs
+          </ExcludeByFile>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>
